@@ -1,0 +1,469 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  MANAGER
+  DEVELOPER
+  AUDITOR
+  VIEWER
+}
+
+enum Priority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+enum ProjectStatus {
+  PLANNING
+  IN_PROGRESS
+  AUDITING
+  READY_FOR_PRODUCTION
+  PUBLISHED
+  ARCHIVED
+}
+
+enum TaskStatus {
+  TODO
+  IN_PROGRESS
+  REVIEW
+  DONE
+}
+
+enum PhaseStatus {
+  NOT_STARTED
+  IN_PROGRESS
+  COMPLETED
+}
+
+enum VulnerabilitySeverity {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+enum VulnerabilityStatus {
+  OPEN
+  IN_PROGRESS
+  MITIGATED
+  ACCEPTED_RISK
+}
+
+enum DeployEnvironment {
+  DEVELOPMENT
+  STAGING
+  PRODUCTION
+}
+
+enum DeployStatus {
+  QUEUED
+  IN_PROGRESS
+  SUCCESS
+  FAILED
+  ROLLED_BACK
+}
+
+enum NotificationType {
+  DEADLINE
+  DELAY
+  STALLED
+  AUDIT_PENDING
+  VULNERABILITY_CRITICAL
+  APPROVAL_PENDING
+  SYSTEM
+}
+
+model User {
+  id                    String                 @id @default(uuid())
+  name                  String
+  email                 String                 @unique
+  password              String
+  role                  Role                   @default(DEVELOPER)
+  avatar                String?
+  isActive              Boolean                @default(true)
+  createdAt             DateTime               @default(now())
+  updatedAt             DateTime               @updatedAt
+
+  createdProjects       Project[]              @relation("ProjectCreator")
+  assignedTasks         Task[]                 @relation("TaskAssignee")
+  createdTasks          Task[]                 @relation("TaskCreator")
+  projectMembers        ProjectMember[]
+  taskComments          TaskComment[]
+  taskAttachments       TaskAttachment[]
+  createdInvites        InviteToken[]          @relation("InviteCreator")
+  notifications         Notification[]
+  auditLogs             AuditLog[]
+  qualityGateApprovals  QualityGateApproval[]
+  createdDocs           DocumentationDoc[]     @relation("DocCreator")
+  auditsConducted       SecurityAudit[]        @relation("Auditor")
+  deploymentsTriggered  Deployment[]           @relation("DeployTriggeredBy")
+}
+
+model InviteToken {
+  id          String    @id @default(uuid())
+  code        String    @unique
+  email       String?
+  role        Role      @default(DEVELOPER)
+  createdById String
+  createdBy   User      @relation("InviteCreator", fields: [createdById], references: [id], onDelete: Cascade)
+  isUsed      Boolean   @default(false)
+  usedAt      DateTime?
+  expiresAt   DateTime
+  createdAt   DateTime  @default(now())
+}
+
+model Project {
+  id                 String                 @id @default(uuid())
+  name               String
+  description        String?                @db.Text
+  logoUrl            String?
+  siteUrl            String?
+  domain             String?
+  technologies       String?                // JSON string com tags
+  priority           Priority               @default(MEDIUM)
+  deadline           DateTime?
+  status             ProjectStatus          @default(PLANNING)
+  progress           Float                  @default(0.0)
+  isPrivate          Boolean                @default(true)
+  createdById        String
+  createdBy          User                   @relation("ProjectCreator", fields: [createdById], references: [id])
+  createdAt          DateTime               @default(now())
+  updatedAt          DateTime               @updatedAt
+
+  members            ProjectMember[]
+  tasks              Task[]
+  phases             ChecklistPhase[]
+  securityAudits     SecurityAudit[]
+  vulnerabilities    Vulnerability[]
+  deployments        Deployment[]
+  backups            BackupRecord[]
+  maintenanceLogs    MaintenanceLog[]
+  qualityGateRules   QualityGateRule[]
+  qualityApprovals   QualityGateApproval[]
+  docs               DocumentationDoc[]
+  secrets            ProjectSecret[]
+  uptimeCheck        ProjectUptimeCheck?
+  auditLogs          AuditLog[]
+}
+
+model ProjectMember {
+  id        String   @id @default(uuid())
+  projectId String
+  userId    String
+  role      Role     @default(DEVELOPER)
+  joinedAt  DateTime @default(now())
+
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([projectId, userId])
+}
+
+model ProjectSecret {
+  id          String   @id @default(uuid())
+  projectId   String
+  key         String
+  value       String   @db.Text // Encrypted value
+  description String?
+  updatedAt   DateTime @updatedAt
+  project     Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@unique([projectId, key])
+}
+
+model ProjectUptimeCheck {
+  id               String    @id @default(uuid())
+  projectId        String    @unique
+  lastCheckedAt    DateTime?
+  status           String    @default("UNKNOWN") // ONLINE, OFFLINE, DEGRADED
+  statusCode       Int?
+  responseTimeMs   Int?
+  sslValid         Boolean   @default(false)
+  sslExpiresAt     DateTime?
+  sslDaysRemaining Int?
+  project          Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+}
+
+model Task {
+  id             String           @id @default(uuid())
+  projectId      String
+  phaseId        String?
+  title          String
+  description    String?          @db.Text
+  status         TaskStatus       @default(TODO)
+  priority       Priority         @default(MEDIUM)
+  deadline       DateTime?
+  estimatedHours Float?
+  actualHours    Float?           @default(0.0)
+  order          Int              @default(0)
+  createdById    String
+  assigneeId     String?
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+
+  project        Project          @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  phase          ChecklistPhase?  @relation(fields: [phaseId], references: [id], onDelete: SetNull)
+  createdBy      User             @relation("TaskCreator", fields: [createdById], references: [id])
+  assignee       User?            @relation("TaskAssignee", fields: [assigneeId], references: [id], onDelete: SetNull)
+  subtasks       Subtask[]
+  comments       TaskComment[]
+  attachments    TaskAttachment[]
+  dependencies   TaskDependency[] @relation("TaskDependencies")
+  dependedOnBy   TaskDependency[] @relation("TaskDependedOn")
+}
+
+model Subtask {
+  id        String   @id @default(uuid())
+  taskId    String
+  title     String
+  completed Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  task      Task     @relation(fields: [taskId], references: [id], onDelete: Cascade)
+}
+
+model TaskComment {
+  id        String   @id @default(uuid())
+  taskId    String
+  userId    String
+  content   String   @db.Text
+  createdAt DateTime @default(now())
+  task      Task     @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model TaskAttachment {
+  id           String   @id @default(uuid())
+  taskId       String
+  fileName     String
+  fileUrl      String   @db.Text
+  fileSize     Int?
+  fileType     String?
+  uploadedById String
+  createdAt    DateTime @default(now())
+  task         Task     @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  uploadedBy   User     @relation(fields: [uploadedById], references: [id])
+}
+
+model TaskDependency {
+  id               String @id @default(uuid())
+  taskId           String
+  dependsOnTaskId  String
+  task             Task   @relation("TaskDependencies", fields: [taskId], references: [id], onDelete: Cascade)
+  dependsOnTask    Task   @relation("TaskDependedOn", fields: [dependsOnTaskId], references: [id], onDelete: Cascade)
+
+  @@unique([taskId, dependsOnTaskId])
+}
+
+model ChecklistPhase {
+  id             String          @id @default(uuid())
+  projectId      String
+  phaseNumber    Int             // 1 a 17
+  name           String
+  description    String?         @db.Text
+  status         PhaseStatus     @default(NOT_STARTED)
+  completedAt    DateTime?
+  approvedById   String?
+  approvalNotes  String?         @db.Text
+  order          Int             @default(0)
+
+  project        Project         @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  tasks          Task[]
+  checklistTasks ChecklistTask[]
+
+  @@unique([projectId, phaseNumber])
+}
+
+model ChecklistTask {
+  id               String         @id @default(uuid())
+  phaseId          String
+  title            String
+  description      String?        @db.Text
+  criteria         String?        @db.Text
+  evidenceRequired Boolean        @default(false)
+  evidenceUrl      String?        @db.Text
+  evidenceNotes    String?        @db.Text
+  isCompleted      Boolean        @default(false)
+  completedAt      DateTime?
+  completedById    String?
+  order            Int            @default(0)
+
+  phase            ChecklistPhase @relation(fields: [phaseId], references: [id], onDelete: Cascade)
+}
+
+model ChecklistTemplate {
+  id          String   @id @default(uuid())
+  name        String
+  description String?  @db.Text
+  isDefault   Boolean  @default(false)
+  phasesJson  String   @db.LongText // JSON com as 17 fases e tarefas padrão
+  createdAt   DateTime @default(now())
+}
+
+model SecurityAudit {
+  id              String          @id @default(uuid())
+  projectId       String
+  title           String
+  auditorId       String
+  status          String          @default("IN_PROGRESS") // PENDING, IN_PROGRESS, APPROVED, REJECTED
+  overallScore    Float           @default(100.0)
+  owaspCategory   String?
+  reportNotes     String?         @db.Text
+  completedAt     DateTime?
+  createdAt       DateTime        @default(now())
+
+  project         Project         @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  auditor         User            @relation("Auditor", fields: [auditorId], references: [id])
+  vulnerabilities Vulnerability[]
+}
+
+model Vulnerability {
+  id             String                @id @default(uuid())
+  auditId        String?
+  projectId      String
+  title          String
+  description    String                @db.Text
+  severity       VulnerabilitySeverity @default(MEDIUM)
+  category       String                // SQLI, XSS, CSRF, SSRF, IDOR_BOLA, AUTH, SESSION, API
+  status         VulnerabilityStatus   @default(OPEN)
+  evidence       String?               @db.Text
+  mitigationPlan String?               @db.Text
+  resolvedAt     DateTime?
+  createdAt      DateTime              @default(now())
+
+  project        Project               @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  audit          SecurityAudit?        @relation(fields: [auditId], references: [id], onDelete: SetNull)
+}
+
+model Deployment {
+  id                String            @id @default(uuid())
+  projectId         String
+  environment       DeployEnvironment @default(DEVELOPMENT)
+  version           String
+  commitHash        String?
+  triggeredById     String
+  status            DeployStatus      @default(QUEUED)
+  resultLog         String?           @db.Text
+  backupCreated     Boolean           @default(false)
+  backupLocation    String?
+  rollbackAvailable Boolean           @default(false)
+  createdAt         DateTime          @default(now())
+
+  project           Project           @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  triggeredBy       User              @relation("DeployTriggeredBy", fields: [triggeredById], references: [id])
+}
+
+model BackupRecord {
+  id          String   @id @default(uuid())
+  projectId   String
+  backupType  String   @default("MANUAL") // AUTO, MANUAL, PRE_DEPLOY
+  filePath    String
+  fileSize    BigInt?
+  status      String   @default("SUCCESS") // SUCCESS, FAILED
+  verified    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+
+  project     Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+}
+
+model MaintenanceLog {
+  id            String   @id @default(uuid())
+  projectId     String
+  logType       String   // UPDATE, MONITORING, FIX, IMPROVEMENT, PERIODIC_REVIEW
+  title         String
+  details       String?  @db.Text
+  performedById String?
+  createdAt     DateTime @default(now())
+
+  project       Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+}
+
+model QualityGateRule {
+  id          String   @id @default(uuid())
+  projectId   String
+  ruleKey     String   // TESTS_PASSED, SECURITY_AUDIT_OK, CRITICAL_VULNS_ZERO, HIGH_VULNS_TREATED, BACKUP_VALIDATED, HOMOLOGATION_OK, PUBLISH_AUTH
+  ruleName    String
+  isMandatory Boolean  @default(true)
+  isPassed    Boolean  @default(false)
+  details     String?  @db.Text
+  checkedAt   DateTime @default(now())
+
+  project     Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@unique([projectId, ruleKey])
+}
+
+model QualityGateApproval {
+  id           String   @id @default(uuid())
+  projectId    String
+  approvedById String
+  status       String   @default("APPROVED") // APPROVED, REJECTED
+  notes        String?  @db.Text
+  createdAt    DateTime @default(now())
+
+  project      Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  approvedBy   User     @relation(fields: [approvedById], references: [id])
+}
+
+model DocumentationDoc {
+  id          String   @id @default(uuid())
+  projectId   String
+  title       String
+  slug        String
+  content     String   @db.LongText
+  category    String   @default("TECHNICAL") // ARCHITECTURE, AUDIT, API, DECISION_RECORD, MANUAL
+  createdById String
+  version     Int      @default(1)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  project     Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  createdBy   User     @relation("DocCreator", fields: [createdById], references: [id])
+
+  @@unique([projectId, slug])
+}
+
+model Notification {
+  id        String           @id @default(uuid())
+  userId    String
+  projectId String?
+  title     String
+  message   String           @db.Text
+  type      NotificationType @default(SYSTEM)
+  isRead    Boolean          @default(false)
+  createdAt DateTime         @default(now())
+
+  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model AuditLog {
+  id         String   @id @default(uuid())
+  userId     String?
+  projectId  String?
+  action     String   // e.g. "USER_LOGIN", "PROJECT_CREATED", "TASK_UPDATED", "DEPLOY_AUTHORIZED"
+  entityType String   // e.g. "Project", "Task", "User", "QualityGate"
+  entityId   String?
+  details    String?  @db.Text
+  ipAddress  String?
+  createdAt  DateTime @default(now())
+
+  user       User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  project    Project? @relation(fields: [projectId], references: [id], onDelete: Cascade)
+}
+
+model AiLog {
+  id        String   @id @default(uuid())
+  prompt    String   @db.Text
+  action    String   // GENERATE_TASKS, SUMMARIZE, SUGGEST_IMPROVEMENTS
+  response  String   @db.LongText
+  createdAt DateTime @default(now())
+}

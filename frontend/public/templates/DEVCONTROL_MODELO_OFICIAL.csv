@@ -1,0 +1,215 @@
+DEVCONTROL — MODELO DE PROCESSOS E CHECKLIST,
+Finalidade,"Modelo-base para importar/adaptar no DEVCONTROL, sistema privado de gestão de projetos web."
+Uso,"Uso pessoal do administrador, com possibilidade de convidar poucos colaboradores."
+Importante,"Como o formato de importação do DEVCONTROL ainda não foi definido, esta planilha funciona como fonte estruturada. Ajuste os nomes das colunas ao importador que for implementado."
+Fluxo sugerido,1) Cadastrar o projeto; 2) selecionar o modelo; 3) importar as 17 fases; 4) atribuir responsáveis e prazos; 5) acompanhar tarefas; 6) aprovar os portões de qualidade.
+Status padrão,Pendente | Em andamento | Em revisão | Bloqueada | Concluída | Não aplicável
+Prioridade,Crítica | Alta | Média | Baixa
+Perfis,Administrador: controle total. Editor: executa tarefas nos projetos autorizados. Leitor: consulta projetos autorizados.
+Regra de segurança,"Somente o Administrador pode convidar usuários, alterar permissões, aprovar auditoria final e autorizar deploy em produção."
+Cálculo de progresso,Calcular pelo número de tarefas concluídas dividido pelo número de tarefas aplicáveis. Não permitir progresso manual como fonte principal.
+Quality Gate,"Não liberar produção com testes essenciais pendentes, backup/restauração não validados ou vulnerabilidades críticas/altas sem correção ou aceitação formal de risco pelo Administrador."
+Personalização,"Prazos, responsáveis, evidências e itens não aplicáveis devem ser definidos por projeto."
+Versão do modelo,DEVCONTROL — Modelo inicial 1.0 | 15/11/2026
+Código,Fase,Objetivo,Obrigatória,Critério geral de conclusão
+01,Planejamento e estratégia,"Definir propósito, público, escopo e viabilidade do projeto.",Sim,Tarefas aplicáveis concluídas e evidências/aceite registrados.
+02,Arquitetura e estrutura,"Organizar páginas, navegação, conteúdo e experiência do usuário.",Sim,Tarefas aplicáveis concluídas e evidências/aceite registrados.
+03,Planejamento técnico,"Definir tecnologias, arquitetura, infraestrutura e padrões.",Sim,Tarefas aplicáveis concluídas e evidências/aceite registrados.
+04,Desenvolvimento frontend,Construir a interface e validar responsividade e acessibilidade.,Sim,Tarefas aplicáveis concluídas e evidências/aceite registrados.
+05,Desenvolvimento backend,"Implementar regras de negócio, APIs, dados e integrações.",Sim,Tarefas aplicáveis concluídas e evidências/aceite registrados.
+06,Segurança da informação,"Verificar aplicação, APIs, infraestrutura, permissões e dependências.",Sim,Tarefas aplicáveis concluídas e evidências/aceite registrados.
+07,SEO e indexação,"Preparar páginas para rastreamento, indexação e descoberta.",Sim,Tarefas aplicáveis concluídas e evidências/aceite registrados.
+08,Desempenho e velocidade,"Medir e otimizar carregamento, interatividade e estabilidade visual.",Sim,Tarefas aplicáveis concluídas e evidências/aceite registrados.
+09,LGPD e conformidade legal,"Mapear dados pessoais, finalidades, bases legais e transparência.",Sim,Tarefas aplicáveis concluídas e evidências/aceite registrados.
+10,Monetização,"Planejar e implementar monetização, quando fizer parte do projeto.",Sim,Tarefas aplicáveis concluídas e evidências/aceite registrados.
+11,Testes e homologação,"Validar funcionalidades, compatibilidade, acessibilidade e estabilidade.",Sim,Tarefas aplicáveis concluídas e evidências/aceite registrados.
+12,Backup e recuperação,"Criar backups, testar restauração e documentar recuperação.",Sim,Tarefas aplicáveis concluídas e evidências/aceite registrados.
+13,Preparação para produção,"Revisar configurações, segredos, domínio, ambiente e prontidão.",Sim,Tarefas aplicáveis concluídas e evidências/aceite registrados.
+14,Deploy e publicação,"Publicar de forma controlada, validar produção e manter rollback.",Sim,Tarefas aplicáveis concluídas e evidências/aceite registrados.
+15,Monitoramento e manutenção,"Acompanhar disponibilidade, erros, segurança e atualizações.",Sim,Tarefas aplicáveis concluídas e evidências/aceite registrados.
+16,Evolução do projeto,Priorizar melhorias com base em dados e necessidades reais.,Sim,Tarefas aplicáveis concluídas e evidências/aceite registrados.
+17,Auditoria final 360°,"Consolidar evidências, pendências, riscos e decisão de liberação.",Sim,Tarefas aplicáveis concluídas e evidências/aceite registrados.
+ID,Código da fase,Fase,Tarefa,Descrição/objetivo,Obrigatoriedade,Perfil sugerido,Prioridade sugerida,Status,Responsável,Prazo,Evidência/URL,Resultado
+T001,01,Planejamento e estratégia,Definir objetivo principal e problema que o site resolve,"Definir propósito, público, escopo e viabilidade do projeto.",Conforme projeto,Editor,Média,Pendente,,,,Não iniciada
+T002,01,Planejamento e estratégia,Definir público-alvo e necessidades dos usuários,"Definir propósito, público, escopo e viabilidade do projeto.",Conforme projeto,Editor,Média,Pendente,,,,Não iniciada
+T003,01,Planejamento e estratégia,Definir escopo inicial e o que ficará fora do projeto,"Definir propósito, público, escopo e viabilidade do projeto.",Conforme projeto,Editor,Média,Pendente,,,,Não iniciada
+T004,01,Planejamento e estratégia,Pesquisar concorrentes e referências,"Definir propósito, público, escopo e viabilidade do projeto.",Conforme projeto,Editor,Média,Pendente,,,,Não iniciada
+T005,01,Planejamento e estratégia,Definir diferencial e proposta de valor,"Definir propósito, público, escopo e viabilidade do projeto.",Conforme projeto,Editor,Média,Pendente,,,,Não iniciada
+T006,01,Planejamento e estratégia,"Definir modelo operacional e monetização, se aplicável","Definir propósito, público, escopo e viabilidade do projeto.",Conforme projeto,Editor,Média,Pendente,,,,Não iniciada
+T007,01,Planejamento e estratégia,"Definir nome, domínio e identidade visual inicial","Definir propósito, público, escopo e viabilidade do projeto.",Conforme projeto,Editor,Média,Pendente,,,,Não iniciada
+T008,01,Planejamento e estratégia,Definir métricas de sucesso e critérios de aceite,"Definir propósito, público, escopo e viabilidade do projeto.",Conforme projeto,Editor,Média,Pendente,,,,Não iniciada
+T009,01,Planejamento e estratégia,"Registrar riscos, dependências e premissas","Definir propósito, público, escopo e viabilidade do projeto.",Conforme projeto,Editor,Média,Pendente,,,,Não iniciada
+T010,02,Arquitetura e estrutura,Criar sitemap com páginas e hierarquia,"Organizar páginas, navegação, conteúdo e experiência do usuário.",Conforme projeto,Editor,Média,Pendente,,,,Não iniciada
+T011,02,Arquitetura e estrutura,"Definir menus, navegação e rodapé","Organizar páginas, navegação, conteúdo e experiência do usuário.",Conforme projeto,Editor,Média,Pendente,,,,Não iniciada
+T012,02,Arquitetura e estrutura,Definir estrutura de URLs,"Organizar páginas, navegação, conteúdo e experiência do usuário.",Conforme projeto,Editor,Média,Pendente,,,,Não iniciada
+T013,02,Arquitetura e estrutura,"Planejar categorias, filtros e busca, se aplicável","Organizar páginas, navegação, conteúdo e experiência do usuário.",Conforme projeto,Editor,Média,Pendente,,,,Não iniciada
+T014,02,Arquitetura e estrutura,Desenhar wireframes das páginas principais,"Organizar páginas, navegação, conteúdo e experiência do usuário.",Conforme projeto,Editor,Média,Pendente,,,,Não iniciada
+T015,02,Arquitetura e estrutura,Definir jornadas e fluxos críticos do usuário,"Organizar páginas, navegação, conteúdo e experiência do usuário.",Conforme projeto,Editor,Média,Pendente,,,,Não iniciada
+T016,02,Arquitetura e estrutura,"Planejar estados vazios, erros e confirmações","Organizar páginas, navegação, conteúdo e experiência do usuário.",Conforme projeto,Editor,Média,Pendente,,,,Não iniciada
+T017,02,Arquitetura e estrutura,Planejar experiência mobile e acessibilidade,"Organizar páginas, navegação, conteúdo e experiência do usuário.",Conforme projeto,Editor,Média,Pendente,,,,Não iniciada
+T018,03,Planejamento técnico,"Definir stack frontend, backend e banco de dados","Definir tecnologias, arquitetura, infraestrutura e padrões.",Conforme projeto,Editor,Média,Pendente,,,,Não iniciada
+T019,03,Planejamento técnico,Documentar arquitetura e limites dos componentes,"Definir tecnologias, arquitetura, infraestrutura e padrões.",Conforme projeto,Editor,Média,Pendente,,,,Não iniciada
+T020,03,Planejamento técnico,"Definir ambientes de desenvolvimento, homologação e produção","Definir tecnologias, arquitetura, infraestrutura e padrões.",Conforme projeto,Editor,Média,Pendente,,,,Não iniciada
+T021,03,Planejamento técnico,Configurar repositório Git e estratégia de branches,"Definir tecnologias, arquitetura, infraestrutura e padrões.",Conforme projeto,Editor,Média,Pendente,,,,Não iniciada
+T022,03,Planejamento técnico,"Definir padrão de código, lint e formatação","Definir tecnologias, arquitetura, infraestrutura e padrões.",Conforme projeto,Editor,Média,Pendente,,,,Não iniciada
+T023,03,Planejamento técnico,"Modelar banco de dados, relações, índices e restrições","Definir tecnologias, arquitetura, infraestrutura e padrões.",Conforme projeto,Editor,Média,Pendente,,,,Não iniciada
+T024,03,Planejamento técnico,Definir estratégia de migrações e seed de desenvolvimento,"Definir tecnologias, arquitetura, infraestrutura e padrões.",Conforme projeto,Editor,Média,Pendente,,,,Não iniciada
+T025,03,Planejamento técnico,Definir gestão de segredos e variáveis de ambiente,"Definir tecnologias, arquitetura, infraestrutura e padrões.",Conforme projeto,Editor,Média,Pendente,,,,Não iniciada
+T026,03,Planejamento técnico,"Definir estratégia de logs, monitoramento e backup","Definir tecnologias, arquitetura, infraestrutura e padrões.",Conforme projeto,Editor,Média,Pendente,,,,Não iniciada
+T027,03,Planejamento técnico,Documentar dependências externas e integrações,"Definir tecnologias, arquitetura, infraestrutura e padrões.",Conforme projeto,Editor,Média,Pendente,,,,Não iniciada
+T028,04,Desenvolvimento frontend,"Implementar layout base, cabeçalho, navegação e rodapé",Construir a interface e validar responsividade e acessibilidade.,Conforme projeto,Editor,Média,Pendente,,,,Não iniciada
+T029,04,Desenvolvimento frontend,Implementar componentes reutilizáveis,Construir a interface e validar responsividade e acessibilidade.,Conforme projeto,Editor,Média,Pendente,,,,Não iniciada
+T030,04,Desenvolvimento frontend,Implementar páginas e estados previstos no sitemap,Construir a interface e validar responsividade e acessibilidade.,Conforme projeto,Editor,Média,Pendente,,,,Não iniciada
+T031,04,Desenvolvimento frontend,Validar formulários no frontend sem depender apenas deles,Construir a interface e validar responsividade e acessibilidade.,Conforme projeto,Editor,Média,Pendente,,,,Não iniciada
+T032,04,Desenvolvimento frontend,"Implementar feedback de carregamento, sucesso e erro",Construir a interface e validar responsividade e acessibilidade.,Conforme projeto,Editor,Média,Pendente,,,,Não iniciada
+T033,04,Desenvolvimento frontend,"Validar responsividade em celular, tablet e desktop",Construir a interface e validar responsividade e acessibilidade.,Conforme projeto,Editor,Média,Pendente,,,,Não iniciada
+T034,04,Desenvolvimento frontend,Validar navegação por teclado e foco visível,Construir a interface e validar responsividade e acessibilidade.,Conforme projeto,Editor,Média,Pendente,,,,Não iniciada
+T035,04,Desenvolvimento frontend,"Validar contraste, rótulos e textos alternativos",Construir a interface e validar responsividade e acessibilidade.,Conforme projeto,Editor,Média,Pendente,,,,Não iniciada
+T036,04,Desenvolvimento frontend,Verificar console do navegador e remover erros,Construir a interface e validar responsividade e acessibilidade.,Conforme projeto,Editor,Média,Pendente,,,,Não iniciada
+T037,05,Desenvolvimento backend,Implementar APIs e regras de negócio,"Implementar regras de negócio, APIs, dados e integrações.",Conforme projeto,Editor,Média,Pendente,,,,Não iniciada
+T038,05,Desenvolvimento backend,Validar entradas no backend,"Implementar regras de negócio, APIs, dados e integrações.",Conforme projeto,Editor,Média,Pendente,,,,Não iniciada
+T039,05,Desenvolvimento backend,"Implementar autenticação e recuperação de conta, se aplicável","Implementar regras de negócio, APIs, dados e integrações.",Conforme projeto,Editor,Média,Pendente,,,,Não iniciada
+T040,05,Desenvolvimento backend,Implementar autorização por recurso e por ação,"Implementar regras de negócio, APIs, dados e integrações.",Conforme projeto,Editor,Média,Pendente,,,,Não iniciada
+T041,05,Desenvolvimento backend,Implementar acesso ao banco com consultas seguras,"Implementar regras de negócio, APIs, dados e integrações.",Conforme projeto,Editor,Média,Pendente,,,,Não iniciada
+T042,05,Desenvolvimento backend,"Implementar paginação, filtros e limites de consulta","Implementar regras de negócio, APIs, dados e integrações.",Conforme projeto,Editor,Média,Pendente,,,,Não iniciada
+T043,05,Desenvolvimento backend,Implementar tratamento padronizado de erros,"Implementar regras de negócio, APIs, dados e integrações.",Conforme projeto,Editor,Média,Pendente,,,,Não iniciada
+T044,05,Desenvolvimento backend,Implementar logs sem registrar segredos ou dados desnecessários,"Implementar regras de negócio, APIs, dados e integrações.",Conforme projeto,Editor,Média,Pendente,,,,Não iniciada
+T045,05,Desenvolvimento backend,Testar integrações externas e falhas de dependências,"Implementar regras de negócio, APIs, dados e integrações.",Conforme projeto,Editor,Média,Pendente,,,,Não iniciada
+T046,05,Desenvolvimento backend,Documentar endpoints e contratos de API,"Implementar regras de negócio, APIs, dados e integrações.",Conforme projeto,Editor,Média,Pendente,,,,Não iniciada
+T047,06,Segurança da informação,"Revisar autenticação, autorização e privilégios","Verificar aplicação, APIs, infraestrutura, permissões e dependências.",Sim,Editor,Alta,Pendente,,,,Não iniciada
+T048,06,Segurança da informação,Testar controle de acesso horizontal e vertical (IDOR/BOLA),"Verificar aplicação, APIs, infraestrutura, permissões e dependências.",Sim,Editor,Alta,Pendente,,,,Não iniciada
+T049,06,Segurança da informação,Verificar SQL Injection e validação de consultas,"Verificar aplicação, APIs, infraestrutura, permissões e dependências.",Sim,Editor,Alta,Pendente,,,,Não iniciada
+T050,06,Segurança da informação,"Verificar XSS armazenado, refletido e baseado em DOM","Verificar aplicação, APIs, infraestrutura, permissões e dependências.",Sim,Editor,Alta,Pendente,,,,Não iniciada
+T051,06,Segurança da informação,Verificar CSRF quando aplicável,"Verificar aplicação, APIs, infraestrutura, permissões e dependências.",Sim,Editor,Alta,Pendente,,,,Não iniciada
+T052,06,Segurança da informação,Verificar SSRF quando houver busca de URLs ou chamadas externas,"Verificar aplicação, APIs, infraestrutura, permissões e dependências.",Sim,Editor,Alta,Pendente,,,,Não iniciada
+T053,06,Segurança da informação,"Revisar upload de arquivos, tipos, tamanho e armazenamento","Verificar aplicação, APIs, infraestrutura, permissões e dependências.",Sim,Editor,Alta,Pendente,,,,Não iniciada
+T054,06,Segurança da informação,"Revisar sessões, cookies, tokens, expiração e logout","Verificar aplicação, APIs, infraestrutura, permissões e dependências.",Sim,Editor,Alta,Pendente,,,,Não iniciada
+T055,06,Segurança da informação,Revisar rate limiting e proteção contra força bruta,"Verificar aplicação, APIs, infraestrutura, permissões e dependências.",Sim,Editor,Alta,Pendente,,,,Não iniciada
+T056,06,Segurança da informação,Revisar CORS e cabeçalhos HTTP de segurança,"Verificar aplicação, APIs, infraestrutura, permissões e dependências.",Sim,Editor,Alta,Pendente,,,,Não iniciada
+T057,06,Segurança da informação,"Verificar exposição de arquivos, backups, logs e variáveis","Verificar aplicação, APIs, infraestrutura, permissões e dependências.",Sim,Editor,Alta,Pendente,,,,Não iniciada
+T058,06,Segurança da informação,Analisar dependências e corrigir vulnerabilidades relevantes,"Verificar aplicação, APIs, infraestrutura, permissões e dependências.",Sim,Editor,Alta,Pendente,,,,Não iniciada
+T059,06,Segurança da informação,Executar testes de segurança autorizados e registrar evidências,"Verificar aplicação, APIs, infraestrutura, permissões e dependências.",Sim,Editor,Alta,Pendente,,,,Não iniciada
+T060,06,Segurança da informação,Revalidar correções e documentar risco residual,"Verificar aplicação, APIs, infraestrutura, permissões e dependências.",Sim,Editor,Alta,Pendente,,,,Não iniciada
+T061,07,SEO e indexação,Definir palavra-chave e intenção de busca por página,"Preparar páginas para rastreamento, indexação e descoberta.",Conforme projeto,Editor,Média,Pendente,,,,Não iniciada
+T062,07,SEO e indexação,Configurar title e meta description únicos,"Preparar páginas para rastreamento, indexação e descoberta.",Conforme projeto,Editor,Média,Pendente,,,,Não iniciada
+T063,07,SEO e indexação,"Revisar hierarquia H1, H2 e H3","Preparar páginas para rastreamento, indexação e descoberta.",Conforme projeto,Editor,Média,Pendente,,,,Não iniciada
+T064,07,SEO e indexação,Configurar URLs amigáveis e canonical,"Preparar páginas para rastreamento, indexação e descoberta.",Conforme projeto,Editor,Média,Pendente,,,,Não iniciada
+T065,07,SEO e indexação,Criar e validar sitemap.xml,"Preparar páginas para rastreamento, indexação e descoberta.",Conforme projeto,Editor,Média,Pendente,,,,Não iniciada
+T066,07,SEO e indexação,Revisar robots.txt e diretivas de indexação,"Preparar páginas para rastreamento, indexação e descoberta.",Conforme projeto,Editor,Média,Pendente,,,,Não iniciada
+T067,07,SEO e indexação,Implementar dados estruturados adequados ao conteúdo,"Preparar páginas para rastreamento, indexação e descoberta.",Conforme projeto,Editor,Média,Pendente,,,,Não iniciada
+T068,07,SEO e indexação,Configurar Open Graph e metadados sociais,"Preparar páginas para rastreamento, indexação e descoberta.",Conforme projeto,Editor,Média,Pendente,,,,Não iniciada
+T069,07,SEO e indexação,"Revisar links internos, links quebrados e redirecionamentos","Preparar páginas para rastreamento, indexação e descoberta.",Conforme projeto,Editor,Média,Pendente,,,,Não iniciada
+T070,07,SEO e indexação,Configurar página 404 e breadcrumbs quando aplicável,"Preparar páginas para rastreamento, indexação e descoberta.",Conforme projeto,Editor,Média,Pendente,,,,Não iniciada
+T071,07,SEO e indexação,Configurar Google Search Console e enviar sitemap,"Preparar páginas para rastreamento, indexação e descoberta.",Conforme projeto,Editor,Média,Pendente,,,,Não iniciada
+T072,08,Desempenho e velocidade,Medir desempenho inicial com Lighthouse/PageSpeed,"Medir e otimizar carregamento, interatividade e estabilidade visual.",Conforme projeto,Editor,Média,Pendente,,,,Não iniciada
+T073,08,Desempenho e velocidade,Otimizar imagens e utilizar formatos modernos quando adequado,"Medir e otimizar carregamento, interatividade e estabilidade visual.",Conforme projeto,Editor,Média,Pendente,,,,Não iniciada
+T074,08,Desempenho e velocidade,Implementar lazy loading para mídia fora da primeira tela,"Medir e otimizar carregamento, interatividade e estabilidade visual.",Conforme projeto,Editor,Média,Pendente,,,,Não iniciada
+T075,08,Desempenho e velocidade,Reduzir JavaScript e CSS não utilizados,"Medir e otimizar carregamento, interatividade e estabilidade visual.",Conforme projeto,Editor,Média,Pendente,,,,Não iniciada
+T076,08,Desempenho e velocidade,Configurar cache e compressão,"Medir e otimizar carregamento, interatividade e estabilidade visual.",Conforme projeto,Editor,Média,Pendente,,,,Não iniciada
+T077,08,Desempenho e velocidade,Revisar fontes e recursos que bloqueiam renderização,"Medir e otimizar carregamento, interatividade e estabilidade visual.",Conforme projeto,Editor,Média,Pendente,,,,Não iniciada
+T078,08,Desempenho e velocidade,Otimizar consultas e chamadas de API,"Medir e otimizar carregamento, interatividade e estabilidade visual.",Conforme projeto,Editor,Média,Pendente,,,,Não iniciada
+T079,08,Desempenho e velocidade,"Medir Core Web Vitals: LCP, INP e CLS","Medir e otimizar carregamento, interatividade e estabilidade visual.",Conforme projeto,Editor,Média,Pendente,,,,Não iniciada
+T080,08,Desempenho e velocidade,Testar em dispositivo e conexão de desempenho limitado,"Medir e otimizar carregamento, interatividade e estabilidade visual.",Conforme projeto,Editor,Média,Pendente,,,,Não iniciada
+T081,09,LGPD e conformidade legal,Mapear dados pessoais coletados e seus fluxos,"Mapear dados pessoais, finalidades, bases legais e transparência.",Conforme projeto,Editor,Média,Pendente,,,,Não iniciada
+T082,09,LGPD e conformidade legal,Documentar finalidade e base legal aplicável por tratamento,"Mapear dados pessoais, finalidades, bases legais e transparência.",Conforme projeto,Editor,Média,Pendente,,,,Não iniciada
+T083,09,LGPD e conformidade legal,Revisar minimização e retenção dos dados,"Mapear dados pessoais, finalidades, bases legais e transparência.",Conforme projeto,Editor,Média,Pendente,,,,Não iniciada
+T084,09,LGPD e conformidade legal,Publicar política de privacidade clara e atualizada,"Mapear dados pessoais, finalidades, bases legais e transparência.",Conforme projeto,Editor,Média,Pendente,,,,Não iniciada
+T085,09,LGPD e conformidade legal,Implementar consentimento quando necessário,"Mapear dados pessoais, finalidades, bases legais e transparência.",Conforme projeto,Editor,Média,Pendente,,,,Não iniciada
+T086,09,LGPD e conformidade legal,"Revisar cookies, analytics e serviços de terceiros","Mapear dados pessoais, finalidades, bases legais e transparência.",Conforme projeto,Editor,Média,Pendente,,,,Não iniciada
+T087,09,LGPD e conformidade legal,Definir canal para solicitações dos titulares,"Mapear dados pessoais, finalidades, bases legais e transparência.",Conforme projeto,Editor,Média,Pendente,,,,Não iniciada
+T088,09,LGPD e conformidade legal,"Definir procedimentos de acesso, correção e exclusão","Mapear dados pessoais, finalidades, bases legais e transparência.",Conforme projeto,Editor,Média,Pendente,,,,Não iniciada
+T089,09,LGPD e conformidade legal,Restringir acesso e proteger dados pessoais,"Mapear dados pessoais, finalidades, bases legais e transparência.",Conforme projeto,Editor,Média,Pendente,,,,Não iniciada
+T090,09,LGPD e conformidade legal,Documentar incidentes e procedimento de resposta,"Mapear dados pessoais, finalidades, bases legais e transparência.",Conforme projeto,Editor,Média,Pendente,,,,Não iniciada
+T091,10,Monetização,Definir se monetização faz parte do escopo,"Planejar e implementar monetização, quando fizer parte do projeto.",Conforme projeto,Editor,Média,Pendente,,,,Não iniciada
+T092,10,Monetização,Revisar requisitos e políticas da plataforma de anúncios/afiliados,"Planejar e implementar monetização, quando fizer parte do projeto.",Conforme projeto,Editor,Média,Pendente,,,,Não iniciada
+T093,10,Monetização,Preparar transparência sobre publicidade e conteúdo patrocinado,"Planejar e implementar monetização, quando fizer parte do projeto.",Conforme projeto,Editor,Média,Pendente,,,,Não iniciada
+T094,10,Monetização,Validar experiência do usuário e evitar anúncios enganosos,"Planejar e implementar monetização, quando fizer parte do projeto.",Conforme projeto,Editor,Média,Pendente,,,,Não iniciada
+T095,10,Monetização,Configurar ads.txt quando aplicável,"Planejar e implementar monetização, quando fizer parte do projeto.",Conforme projeto,Editor,Média,Pendente,,,,Não iniciada
+T096,10,Monetização,Verificar consentimento e privacidade para tecnologias de publicidade,"Planejar e implementar monetização, quando fizer parte do projeto.",Conforme projeto,Editor,Média,Pendente,,,,Não iniciada
+T097,10,Monetização,Registrar métricas e custos de monetização,"Planejar e implementar monetização, quando fizer parte do projeto.",Conforme projeto,Editor,Média,Pendente,,,,Não iniciada
+T098,11,Testes e homologação,Testar fluxos principais de ponta a ponta,"Validar funcionalidades, compatibilidade, acessibilidade e estabilidade.",Sim,Editor,Alta,Pendente,,,,Não iniciada
+T099,11,Testes e homologação,"Testar formulários, validações e mensagens de erro","Validar funcionalidades, compatibilidade, acessibilidade e estabilidade.",Sim,Editor,Alta,Pendente,,,,Não iniciada
+T100,11,Testes e homologação,"Testar cadastro, login, logout e recuperação, se aplicável","Validar funcionalidades, compatibilidade, acessibilidade e estabilidade.",Sim,Editor,Alta,Pendente,,,,Não iniciada
+T101,11,Testes e homologação,Testar permissões com perfis diferentes,"Validar funcionalidades, compatibilidade, acessibilidade e estabilidade.",Sim,Editor,Alta,Pendente,,,,Não iniciada
+T102,11,Testes e homologação,Testar APIs e integração com banco,"Validar funcionalidades, compatibilidade, acessibilidade e estabilidade.",Sim,Editor,Alta,Pendente,,,,Não iniciada
+T103,11,Testes e homologação,Testar estados de falha e indisponibilidade externa,"Validar funcionalidades, compatibilidade, acessibilidade e estabilidade.",Sim,Editor,Alta,Pendente,,,,Não iniciada
+T104,11,Testes e homologação,Testar navegadores e dispositivos relevantes,"Validar funcionalidades, compatibilidade, acessibilidade e estabilidade.",Sim,Editor,Alta,Pendente,,,,Não iniciada
+T105,11,Testes e homologação,Testar acessibilidade com teclado e leitor de tela,"Validar funcionalidades, compatibilidade, acessibilidade e estabilidade.",Sim,Editor,Alta,Pendente,,,,Não iniciada
+T106,11,Testes e homologação,Executar testes automatizados e regressão,"Validar funcionalidades, compatibilidade, acessibilidade e estabilidade.",Sim,Editor,Alta,Pendente,,,,Não iniciada
+T107,11,Testes e homologação,Corrigir defeitos e repetir os testes,"Validar funcionalidades, compatibilidade, acessibilidade e estabilidade.",Sim,Editor,Alta,Pendente,,,,Não iniciada
+T108,11,Testes e homologação,Registrar evidências e aceite de homologação,"Validar funcionalidades, compatibilidade, acessibilidade e estabilidade.",Sim,Editor,Alta,Pendente,,,,Não iniciada
+T109,12,Backup e recuperação,Configurar backup de arquivos e banco,"Criar backups, testar restauração e documentar recuperação.",Sim,Editor,Alta,Pendente,,,,Não iniciada
+T110,12,Backup e recuperação,"Definir frequência, retenção e destino separado","Criar backups, testar restauração e documentar recuperação.",Sim,Editor,Alta,Pendente,,,,Não iniciada
+T111,12,Backup e recuperação,Restringir acesso aos backups,"Criar backups, testar restauração e documentar recuperação.",Sim,Editor,Alta,Pendente,,,,Não iniciada
+T112,12,Backup e recuperação,Verificar integridade dos arquivos gerados,"Criar backups, testar restauração e documentar recuperação.",Sim,Editor,Alta,Pendente,,,,Não iniciada
+T113,12,Backup e recuperação,Executar restauração em ambiente controlado,"Criar backups, testar restauração e documentar recuperação.",Sim,Editor,Alta,Pendente,,,,Não iniciada
+T114,12,Backup e recuperação,Documentar procedimento e tempo estimado de recuperação,"Criar backups, testar restauração e documentar recuperação.",Sim,Editor,Alta,Pendente,,,,Não iniciada
+T115,12,Backup e recuperação,Registrar data do último backup validado,"Criar backups, testar restauração e documentar recuperação.",Sim,Editor,Alta,Pendente,,,,Não iniciada
+T116,13,Preparação para produção,"Configurar domínio, DNS e HTTPS","Revisar configurações, segredos, domínio, ambiente e prontidão.",Sim,Administrador,Alta,Pendente,,,,Não iniciada
+T117,13,Preparação para produção,Confirmar variáveis e segredos exclusivos de produção,"Revisar configurações, segredos, domínio, ambiente e prontidão.",Sim,Administrador,Alta,Pendente,,,,Não iniciada
+T118,13,Preparação para produção,Desativar debug e mensagens internas,"Revisar configurações, segredos, domínio, ambiente e prontidão.",Sim,Administrador,Alta,Pendente,,,,Não iniciada
+T119,13,Preparação para produção,"Remover arquivos, usuários e rotas de teste","Revisar configurações, segredos, domínio, ambiente e prontidão.",Sim,Administrador,Alta,Pendente,,,,Não iniciada
+T120,13,Preparação para produção,Revisar permissões de arquivos e diretórios,"Revisar configurações, segredos, domínio, ambiente e prontidão.",Sim,Administrador,Alta,Pendente,,,,Não iniciada
+T121,13,Preparação para produção,"Revisar CORS, cookies e cabeçalhos de produção","Revisar configurações, segredos, domínio, ambiente e prontidão.",Sim,Administrador,Alta,Pendente,,,,Não iniciada
+T122,13,Preparação para produção,Executar migrações com plano de contingência,"Revisar configurações, segredos, domínio, ambiente e prontidão.",Sim,Administrador,Alta,Pendente,,,,Não iniciada
+T123,13,Preparação para produção,"Confirmar monitoramento, logs e alertas","Revisar configurações, segredos, domínio, ambiente e prontidão.",Sim,Administrador,Alta,Pendente,,,,Não iniciada
+T124,13,Preparação para produção,Preparar plano de rollback,"Revisar configurações, segredos, domínio, ambiente e prontidão.",Sim,Administrador,Alta,Pendente,,,,Não iniciada
+T125,13,Preparação para produção,Obter aprovação do Administrador para publicação,"Revisar configurações, segredos, domínio, ambiente e prontidão.",Sim,Administrador,Alta,Pendente,,,,Não iniciada
+T126,14,Deploy e publicação,"Registrar versão, commit e escopo do deploy","Publicar de forma controlada, validar produção e manter rollback.",Sim,Administrador,Alta,Pendente,,,,Não iniciada
+T127,14,Deploy e publicação,Executar backup imediatamente antes da publicação,"Publicar de forma controlada, validar produção e manter rollback.",Sim,Administrador,Alta,Pendente,,,,Não iniciada
+T128,14,Deploy e publicação,Publicar no ambiente autorizado,"Publicar de forma controlada, validar produção e manter rollback.",Sim,Administrador,Alta,Pendente,,,,Não iniciada
+T129,14,Deploy e publicação,Executar migrações previstas,"Publicar de forma controlada, validar produção e manter rollback.",Sim,Administrador,Alta,Pendente,,,,Não iniciada
+T130,14,Deploy e publicação,Verificar inicialização e saúde dos serviços,"Publicar de forma controlada, validar produção e manter rollback.",Sim,Administrador,Alta,Pendente,,,,Não iniciada
+T131,14,Deploy e publicação,Executar smoke tests em páginas e fluxos críticos,"Publicar de forma controlada, validar produção e manter rollback.",Sim,Administrador,Alta,Pendente,,,,Não iniciada
+T132,14,Deploy e publicação,"Verificar logs, erros HTTP e integrações","Publicar de forma controlada, validar produção e manter rollback.",Sim,Administrador,Alta,Pendente,,,,Não iniciada
+T133,14,Deploy e publicação,Confirmar funcionamento em dispositivos móveis,"Publicar de forma controlada, validar produção e manter rollback.",Sim,Administrador,Alta,Pendente,,,,Não iniciada
+T134,14,Deploy e publicação,"Registrar resultado, evidências e responsável","Publicar de forma controlada, validar produção e manter rollback.",Sim,Administrador,Alta,Pendente,,,,Não iniciada
+T135,14,Deploy e publicação,Executar rollback se critérios de falha forem atingidos,"Publicar de forma controlada, validar produção e manter rollback.",Sim,Administrador,Alta,Pendente,,,,Não iniciada
+T136,15,Monitoramento e manutenção,Configurar monitoramento de disponibilidade,"Acompanhar disponibilidade, erros, segurança e atualizações.",Conforme projeto,Editor,Média,Pendente,,,,Não iniciada
+T137,15,Monitoramento e manutenção,Revisar logs e erros periodicamente,"Acompanhar disponibilidade, erros, segurança e atualizações.",Conforme projeto,Editor,Média,Pendente,,,,Não iniciada
+T138,15,Monitoramento e manutenção,Monitorar alertas de segurança e dependências,"Acompanhar disponibilidade, erros, segurança e atualizações.",Conforme projeto,Editor,Média,Pendente,,,,Não iniciada
+T139,15,Monitoramento e manutenção,"Verificar formulários, APIs e fluxos críticos","Acompanhar disponibilidade, erros, segurança e atualizações.",Conforme projeto,Editor,Média,Pendente,,,,Não iniciada
+T140,15,Monitoramento e manutenção,Executar rotina de backup e conferir resultado,"Acompanhar disponibilidade, erros, segurança e atualizações.",Conforme projeto,Editor,Média,Pendente,,,,Não iniciada
+T141,15,Monitoramento e manutenção,Aplicar atualizações de segurança com teste prévio,"Acompanhar disponibilidade, erros, segurança e atualizações.",Conforme projeto,Editor,Média,Pendente,,,,Não iniciada
+T142,15,Monitoramento e manutenção,Revisar links quebrados e conteúdo desatualizado,"Acompanhar disponibilidade, erros, segurança e atualizações.",Conforme projeto,Editor,Média,Pendente,,,,Não iniciada
+T143,15,Monitoramento e manutenção,"Registrar incidentes, causa e correção","Acompanhar disponibilidade, erros, segurança e atualizações.",Conforme projeto,Editor,Média,Pendente,,,,Não iniciada
+T144,16,Evolução do projeto,Coletar feedback e necessidades dos usuários,Priorizar melhorias com base em dados e necessidades reais.,Conforme projeto,Editor,Média,Pendente,,,,Não iniciada
+T145,16,Evolução do projeto,Analisar métricas de uso e desempenho,Priorizar melhorias com base em dados e necessidades reais.,Conforme projeto,Editor,Média,Pendente,,,,Não iniciada
+T146,16,Evolução do projeto,Priorizar melhorias por impacto e esforço,Priorizar melhorias com base em dados e necessidades reais.,Conforme projeto,Editor,Média,Pendente,,,,Não iniciada
+T147,16,Evolução do projeto,Registrar solicitações e decisões,Priorizar melhorias com base em dados e necessidades reais.,Conforme projeto,Editor,Média,Pendente,,,,Não iniciada
+T148,16,Evolução do projeto,Planejar versão e critérios de aceite,Priorizar melhorias com base em dados e necessidades reais.,Conforme projeto,Editor,Média,Pendente,,,,Não iniciada
+T149,16,Evolução do projeto,Executar testes de regressão após mudanças,Priorizar melhorias com base em dados e necessidades reais.,Conforme projeto,Editor,Média,Pendente,,,,Não iniciada
+T150,16,Evolução do projeto,Atualizar documentação e histórico de versão,Priorizar melhorias com base em dados e necessidades reais.,Conforme projeto,Editor,Média,Pendente,,,,Não iniciada
+T151,17,Auditoria final 360°,Conferir conclusão das fases obrigatórias,"Consolidar evidências, pendências, riscos e decisão de liberação.",Sim,Administrador,Alta,Pendente,,,,Não iniciada
+T152,17,Auditoria final 360°,Conferir evidências dos testes funcionais,"Consolidar evidências, pendências, riscos e decisão de liberação.",Sim,Administrador,Alta,Pendente,,,,Não iniciada
+T153,17,Auditoria final 360°,Conferir relatório de auditoria de segurança,"Consolidar evidências, pendências, riscos e decisão de liberação.",Sim,Administrador,Alta,Pendente,,,,Não iniciada
+T154,17,Auditoria final 360°,Confirmar tratamento de vulnerabilidades críticas e altas,"Consolidar evidências, pendências, riscos e decisão de liberação.",Sim,Administrador,Alta,Pendente,,,,Não iniciada
+T155,17,Auditoria final 360°,Confirmar backup e restauração testada,"Consolidar evidências, pendências, riscos e decisão de liberação.",Sim,Administrador,Alta,Pendente,,,,Não iniciada
+T156,17,Auditoria final 360°,"Confirmar revisão de SEO, acessibilidade e LGPD","Consolidar evidências, pendências, riscos e decisão de liberação.",Sim,Administrador,Alta,Pendente,,,,Não iniciada
+T157,17,Auditoria final 360°,Confirmar homologação e plano de rollback,"Consolidar evidências, pendências, riscos e decisão de liberação.",Sim,Administrador,Alta,Pendente,,,,Não iniciada
+T158,17,Auditoria final 360°,Registrar riscos residuais e aceite formal,"Consolidar evidências, pendências, riscos e decisão de liberação.",Sim,Administrador,Alta,Pendente,,,,Não iniciada
+T159,17,Auditoria final 360°,"Registrar decisão final: aprovado, reprovado ou aprovado com ressalvas","Consolidar evidências, pendências, riscos e decisão de liberação.",Sim,Administrador,Alta,Pendente,,,,Não iniciada
+Perfil,Permissões sugeridas,Restrições
+Administrador,Acesso total; criar/editar/excluir projetos; convidar e bloquear usuários; alterar permissões; aprovar auditorias finais; autorizar deploy em produção; gerenciar configurações.,Não deve compartilhar credenciais pessoais; proteger conta com senha forte e MFA quando disponível.
+Editor,Acessar apenas projetos autorizados; atualizar tarefas; criar subtarefas; comentar; anexar evidências; registrar problemas; consultar documentação autorizada.,Não pode promover usuários; não pode alterar o próprio perfil; não pode aprovar auditoria final nem autorizar deploy em produção.
+Leitor,"Consultar projetos, tarefas, status e documentos explicitamente autorizados.","Sem criação, edição, exclusão, aprovação ou acesso a projetos não autorizados."
+ID,Controle de liberação,Obrigatório,Quem valida,Regra de aprovação
+QG01,Testes funcionais essenciais concluídos,Sim,Administrador,Sem falhas críticas nos fluxos essenciais.
+QG02,Auditoria de segurança concluída,Sim,Administrador/Auditor,"Escopo, resultados e evidências registrados."
+QG03,Vulnerabilidades críticas tratadas,Sim,Administrador,Nenhuma crítica aberta; exceções não liberam automaticamente.
+QG04,Vulnerabilidades altas tratadas ou formalmente aceitas,Sim,Administrador,"Aceitação de risco documentada, com justificativa, responsável e prazo."
+QG05,Backup pré-deploy realizado,Sim,Administrador/Editor autorizado,Backup identificado e armazenado em local protegido.
+QG06,Restauração validada,Sim,Administrador/Editor autorizado,Teste de restauração documentado.
+QG07,Homologação aprovada,Sim,Administrador,Evidências e aceite registrados.
+QG08,Plano de rollback disponível,Sim,Administrador/Editor autorizado,Procedimento conhecido e executável.
+QG09,"Revisões de SEO, acessibilidade e privacidade realizadas",Conforme escopo,Administrador/Editor,Pendências e riscos documentados.
+QG10,Autorização final de deploy em produção,Sim,Administrador,Aprovação explícita registrada no sistema.
+Processo,Passo,Regra
+Convite,Administrador envia convite individual,Não permitir cadastro público aberto.
+Ativação,Convidado define senha própria e confirma acesso,"Usar token de convite único, com expiração."
+Permissão,Administrador atribui perfil e projetos autorizados,Aplicar autorização no backend em todas as operações.
+Revogação,Administrador desativa usuário ou remove acesso ao projeto,Revogar sessões ativas quando apropriado.
+Auditoria,"Registrar login, alterações, exclusões e aprovações","Guardar ator, ação, data/hora e entidade afetada."
+Segredos,"Não armazenar senhas de hospedagem, banco ou API em tarefas/documentos comuns",Usar gerenciador de segredos apropriado; nunca texto puro.
+Produção,Somente Administrador autoriza deploy de produção,Colaboradores podem preparar e solicitar publicação.
+Auditoria final,Somente Administrador registra aprovação final,"Auditor pode produzir parecer, mas não substituir a aprovação do Administrador."

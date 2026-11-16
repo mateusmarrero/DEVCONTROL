@@ -10,7 +10,7 @@ export const Login: React.FC = () => {
   const [tab, setTab] = useState<'login' | 'invite'>('login');
 
   // Form de Login
-  const [email, setEmail] = useState('admin@devcontrol.io');
+  const [email, setEmail] = useState('mateusmarrero@gmail.com');
   const [password, setPassword] = useState('DevControl@2026');
 
   // Form de Convite
@@ -248,10 +248,10 @@ export const Login: React.FC = () => {
             <div className="grid grid-cols-2 gap-2 text-xs">
               <button
                 type="button"
-                onClick={() => fillQuickLogin('admin@devcontrol.io')}
+                onClick={() => fillQuickLogin('mateusmarrero@gmail.com')}
                 className="p-2 rounded-lg bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/20 text-rose-300 font-semibold text-left transition-colors"
               >
-                👑 Administrador
+                👑 Administrador (Mateus)
               </button>
               <button
                 type="button"

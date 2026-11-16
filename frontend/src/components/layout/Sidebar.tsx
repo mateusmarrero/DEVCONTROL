@@ -16,7 +16,8 @@ import {
   ChevronRight,
   LogOut,
   Terminal,
-  Server
+  Server,
+  Sparkles
 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 
@@ -33,6 +34,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ collapsed, setCollapsed }) => 
     { name: 'Projetos', path: '/projects', icon: FolderKanban },
     { name: 'Tarefas', path: '/tasks', icon: CheckSquare },
     { name: 'Checklist Master', path: '/checklist', icon: ListOrdered, badge: '17 Fases' },
+    { name: 'Radar SEO & SERP', path: '/seo-scanner', icon: Sparkles, badge: 'Google 360°' },
     { name: 'Central de Segurança', path: '/security', icon: ShieldAlert },
     { name: 'Documentação', path: '/docs', icon: FileCode2 },
     { name: 'Controle de Deploy', path: '/deploy', icon: Rocket },

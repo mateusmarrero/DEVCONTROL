@@ -17,6 +17,7 @@ import { Maintenance } from './pages/Maintenance';
 import { QualityGate } from './pages/QualityGate';
 import { Notifications } from './pages/Notifications';
 import { Invites } from './pages/Invites';
+import { SeoScanner } from './pages/SeoScanner';
 
 const ProtectedRoute: React.FC<{ children: React.ReactNode; adminOnly?: boolean }> = ({ children, adminOnly }) => {
   const { isAuthenticated, loading, isAdmin } = useAuth();
@@ -66,6 +67,7 @@ export const App: React.FC = () => {
               <Route path="deploy" element={<Deployments />} />
               <Route path="maintenance" element={<Maintenance />} />
               <Route path="quality-gate" element={<QualityGate />} />
+              <Route path="seo-scanner" element={<SeoScanner />} />
               <Route path="notifications" element={<Notifications />} />
               <Route
                 path="invites"

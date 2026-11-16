@@ -17,6 +17,7 @@ import { qualityGateRoutes } from './routes/quality-gate.routes.js';
 import { dashboardRoutes } from './routes/dashboard.routes.js';
 import { notificationRoutes } from './routes/notifications.routes.js';
 import { aiRoutes } from './routes/ai.routes.js';
+import { seoRoutes } from './routes/seo.routes.js';
 
 dotenv.config();
 
@@ -99,6 +100,7 @@ async function main() {
   await app.register(dashboardRoutes, { prefix: '/api/dashboard' });
   await app.register(notificationRoutes, { prefix: '/api/notifications' });
   await app.register(aiRoutes, { prefix: '/api/ai' });
+  await app.register(seoRoutes, { prefix: '/api/seo' });
 
   const port = parseInt(process.env.PORT || '4000', 10);
   const host = process.env.HOST || '0.0.0.0';

@@ -156,7 +156,11 @@ export const PHASES_17_CATALOG: OfficialPhase[] = [
       { id: 'T068', title: 'Configurar Open Graph e metadados sociais', criteria: 'Preparar páginas para descoberta e SEO.', isMandatory: false, priority: 'MEDIUM', suggestedRole: 'Editor' },
       { id: 'T069', title: 'Revisar links internos, links quebrados e redirecionamentos', criteria: 'Preparar páginas para descoberta e SEO.', isMandatory: false, priority: 'MEDIUM', suggestedRole: 'Editor' },
       { id: 'T070', title: 'Configurar página 404 e breadcrumbs quando aplicável', criteria: 'Preparar páginas para descoberta e SEO.', isMandatory: false, priority: 'MEDIUM', suggestedRole: 'Editor' },
-      { id: 'T071', title: 'Configurar Google Search Console e enviar sitemap', criteria: 'Preparar páginas para descoberta e SEO.', isMandatory: false, priority: 'MEDIUM', suggestedRole: 'Editor' }
+      { id: 'T071', title: 'Configurar Google Search Console e enviar sitemap', criteria: 'Preparar páginas para descoberta e SEO.', isMandatory: false, priority: 'MEDIUM', suggestedRole: 'Editor' },
+      { id: 'T160', title: 'Auditoria contínua de indexação e envio dinâmico via Google Indexing API / Bing IndexNow', criteria: 'Monitorar rastreamento, envio dinâmico de sitemap e indexação instantânea.', isMandatory: true, priority: 'HIGH', suggestedRole: 'Editor' },
+      { id: 'T161', title: 'Implementar Schema Markup avançado JSON-LD (Rich Snippets & EEAT)', criteria: 'Configurar schemas Breadcrumbs, Organization, Article, FAQPage e Rich Snippets no Google.', isMandatory: true, priority: 'HIGH', suggestedRole: 'Editor' },
+      { id: 'T162', title: 'Otimização semântica para Respostas de IA do Google (AI Overviews / SGE)', criteria: 'Estruturação de respostas diretas, tabelas comparativas e autoridade EEAT para ser citado pela IA do Google.', isMandatory: true, priority: 'HIGH', suggestedRole: 'Editor' },
+      { id: 'T163', title: 'Arquitetura de Topic Clusters e Silos de links internos sem canibalização de palavras-chave', criteria: 'Garantir autoridade tópica e direcionamento correto de PageRank interno.', isMandatory: true, priority: 'HIGH', suggestedRole: 'Editor' }
     ]
   },
   {
@@ -175,7 +179,8 @@ export const PHASES_17_CATALOG: OfficialPhase[] = [
       { id: 'T077', title: 'Revisar fontes e recursos que bloqueiam renderização', criteria: 'Medir e otimizar carregamento.', isMandatory: false, priority: 'MEDIUM', suggestedRole: 'Editor' },
       { id: 'T078', title: 'Otimizar consultas e chamadas de API', criteria: 'Medir e otimizar carregamento.', isMandatory: false, priority: 'MEDIUM', suggestedRole: 'Editor' },
       { id: 'T079', title: 'Medir Core Web Vitals: LCP, INP e CLS', criteria: 'Medir e otimizar carregamento.', isMandatory: false, priority: 'MEDIUM', suggestedRole: 'Editor' },
-      { id: 'T080', title: 'Testar em dispositivo e conexão de desempenho limitado', criteria: 'Medir e otimizar carregamento.', isMandatory: false, priority: 'MEDIUM', suggestedRole: 'Editor' }
+      { id: 'T080', title: 'Testar em dispositivo e conexão de desempenho limitado', criteria: 'Medir e otimizar carregamento.', isMandatory: false, priority: 'MEDIUM', suggestedRole: 'Editor' },
+      { id: 'T164', title: 'Otimização estrita de Core Web Vitals para ranking Google (LCP < 2.0s, INP < 150ms, CLS < 0.05)', criteria: 'Atingir notas verdes no Google PageSpeed Insights e dados de campo CrUX em dispositivos móveis.', isMandatory: true, priority: 'HIGH', suggestedRole: 'Editor' }
     ]
   },
   {
@@ -325,7 +330,8 @@ export const PHASES_17_CATALOG: OfficialPhase[] = [
       { id: 'T147', title: 'Registrar solicitações e decisões', criteria: 'Priorizar melhorias contínuas.', isMandatory: false, priority: 'MEDIUM', suggestedRole: 'Editor' },
       { id: 'T148', title: 'Planejar versão e critérios de aceite', criteria: 'Priorizar melhorias contínuas.', isMandatory: false, priority: 'MEDIUM', suggestedRole: 'Editor' },
       { id: 'T149', title: 'Executar testes de regressão após mudanças', criteria: 'Priorizar melhorias contínuas.', isMandatory: false, priority: 'MEDIUM', suggestedRole: 'Editor' },
-      { id: 'T150', title: 'Atualizar documentação e histórico de versão', criteria: 'Priorizar melhorias contínuas.', isMandatory: false, priority: 'MEDIUM', suggestedRole: 'Editor' }
+      { id: 'T150', title: 'Atualizar documentação e histórico de versão', criteria: 'Priorizar melhorias contínuas.', isMandatory: false, priority: 'MEDIUM', suggestedRole: 'Editor' },
+      { id: 'T165', title: 'Atualização contínua de conteúdo Evergreen e auditoria periódica de posicionamento SERP', criteria: 'Garantir frescor algorítmico do Google (Query Deserves Freshness) e testes de CTR nos títulos de busca.', isMandatory: false, priority: 'MEDIUM', suggestedRole: 'Editor' }
     ]
   },
   {

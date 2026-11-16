@@ -21,7 +21,18 @@ import {
   Sparkles,
   Save,
   Trash2,
-  FileText
+  FileText,
+  Search,
+  Filter,
+  LayoutGrid,
+  List,
+  ChevronDown,
+  ChevronUp,
+  ArrowRight,
+  X,
+  Circle,
+  Layers,
+  Check
 } from 'lucide-react';
 import { api } from '../services/api';
 import { Project, ChecklistPhase, Task, Vulnerability, Deployment, QualityGateRule, DocumentationDoc } from '../types';
@@ -63,6 +74,26 @@ export const ProjectDetail: React.FC = () => {
   // Deploy Form
   const [deployEnv, setDeployEnv] = useState<'DEVELOPMENT' | 'STAGING' | 'PRODUCTION'>('DEVELOPMENT');
   const [deployVersion, setDeployVersion] = useState('v1.0.1');
+
+  // Estados para as 17 Etapas em Cards Médios
+  const [phaseFilter, setPhaseFilter] = useState<'ALL' | 'COMPLETED' | 'IN_PROGRESS' | 'NOT_STARTED'>('ALL');
+  const [phaseSearch, setPhaseSearch] = useState('');
+  const [phaseViewMode, setPhaseViewMode] = useState<'grid' | 'list'>('grid');
+  const [selectedPhaseModal, setSelectedPhaseModal] = useState<ChecklistPhase | null>(null);
+  const [expandedInlinePhaseIds, setExpandedInlinePhaseIds] = useState<string[]>([]);
+
+  const toggleInlinePhase = (phaseId: string) => {
+    setExpandedInlinePhaseIds((prev) =>
+      prev.includes(phaseId) ? prev.filter((pId) => pId !== phaseId) : [...prev, phaseId]
+    );
+  };
+
+  useEffect(() => {
+    if (selectedPhaseModal) {
+      const updated = phases.find((p) => p.id === selectedPhaseModal.id);
+      if (updated) setSelectedPhaseModal(updated);
+    }
+  }, [phases]);
 
   const loadProjectData = async () => {
     if (!id) return;
@@ -321,101 +352,496 @@ export const ProjectDetail: React.FC = () => {
 
       {/* CONTEÚDO DAS ABAS */}
 
-      {/* ABA 1: AS 17 FASES DO CHECKLIST MASTER */}
+      {/* ABA 1: AS 17 FASES DO CHECKLIST MASTER EM CARDS DE TAMANHO MÉDIO */}
       {activeTab === 'phases' && (
-        <div className="space-y-4">
-          <div className="flex items-center justify-between">
-            <h2 className="text-base font-extrabold text-gray-900 dark:text-white flex items-center space-x-2">
-              <ListOrdered className="w-5 h-5 text-indigo-500" />
-              <span>Checklist Master — As 17 Fases Oficiais do Ciclo de Vida</span>
-            </h2>
-            <span className="text-xs text-gray-400 font-semibold">
-              Progresso calculado automaticamente com base nas tarefas
-            </span>
+        <div className="space-y-5">
+          {/* Cabeçalho e Métricas Rápidas */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-5 rounded-2xl bg-white dark:bg-[#0E131F] border border-gray-200/90 dark:border-gray-800 shadow-sm">
+            <div>
+              <div className="flex items-center space-x-2">
+                <ListOrdered className="w-5 h-5 text-indigo-500" />
+                <h2 className="text-base font-extrabold text-gray-900 dark:text-white">
+                  Checklist Master — As 17 Fases Oficiais do Ciclo de Vida
+                </h2>
+              </div>
+              <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                Acompanhe e homologue o andamento em cards médios estruturados. Progresso sincronizado no MariaDB.
+              </p>
+            </div>
+
+            {/* Micro-pills de status das etapas */}
+            <div className="flex items-center flex-wrap gap-2 shrink-0">
+              <span className="text-[11px] font-bold px-2.5 py-1 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-gray-700">
+                Total: <b>{phases.length} Etapas</b>
+              </span>
+              <span className="text-[11px] font-bold px-2.5 py-1 rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                {phases.filter((p) => p.status === 'COMPLETED').length} Homologadas
+              </span>
+              <span className="text-[11px] font-bold px-2.5 py-1 rounded-lg bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
+                {phases.filter((p) => p.status === 'IN_PROGRESS').length} Em Execução
+              </span>
+              {phases.filter((p) => p.status === 'NOT_STARTED').length > 0 && (
+                <span className="text-[11px] font-bold px-2.5 py-1 rounded-lg bg-gray-500/10 text-gray-400 border border-gray-500/20">
+                  {phases.filter((p) => p.status === 'NOT_STARTED').length} Pendentes
+                </span>
+              )}
+            </div>
           </div>
 
-          <div className="space-y-3">
-            {phases.map((phase) => (
-              <div
-                key={phase.id}
-                className="p-5 rounded-2xl bg-white dark:bg-[#0E131F] border border-gray-200 dark:border-gray-800 shadow-sm transition-all"
-              >
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3">
+          {/* Barra de Filtros, Busca e Alternância de Visualização */}
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 p-3.5 rounded-2xl bg-white dark:bg-[#0E131F] border border-gray-200/90 dark:border-gray-800">
+            {/* Campo de Busca Leve */}
+            <div className="relative flex-1 max-w-md">
+              <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
+              <input
+                type="text"
+                value={phaseSearch}
+                onChange={(e) => setPhaseSearch(e.target.value)}
+                placeholder="Buscar etapa por nome, número ou palavra-chave..."
+                className="w-full pl-9 pr-8 py-2 rounded-xl text-xs bg-gray-50 dark:bg-gray-900/60 border border-gray-200 dark:border-gray-800 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              />
+              {phaseSearch && (
+                <button
+                  onClick={() => setPhaseSearch('')}
+                  className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-200"
+                >
+                  <X className="w-3.5 h-3.5" />
+                </button>
+              )}
+            </div>
+
+            {/* Filtros por Status & Alternador de Modo */}
+            <div className="flex items-center justify-between md:justify-end gap-2 overflow-x-auto">
+              <div className="flex items-center space-x-1 bg-gray-100 dark:bg-gray-900 p-1 rounded-xl">
+                {[
+                  { id: 'ALL', label: 'Todas' },
+                  { id: 'COMPLETED', label: 'Concluídas' },
+                  { id: 'IN_PROGRESS', label: 'Em Andamento' },
+                  { id: 'NOT_STARTED', label: 'Pendentes' }
+                ].map((f) => (
+                  <button
+                    key={f.id}
+                    onClick={() => setPhaseFilter(f.id as any)}
+                    className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${
+                      phaseFilter === f.id
+                        ? 'bg-white dark:bg-indigo-600 text-gray-900 dark:text-white shadow-sm'
+                        : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+                    }`}
+                  >
+                    {f.label}
+                  </button>
+                ))}
+              </div>
+
+              {/* Toggle de Layout: Cards Médios vs Lista */}
+              <div className="flex items-center space-x-1 bg-gray-100 dark:bg-gray-900 p-1 rounded-xl shrink-0">
+                <button
+                  onClick={() => setPhaseViewMode('grid')}
+                  title="Exibição em Cards de Tamanho Médio"
+                  className={`p-1.5 rounded-lg text-xs font-bold transition-all flex items-center space-x-1 ${
+                    phaseViewMode === 'grid'
+                      ? 'bg-white dark:bg-indigo-600 text-gray-900 dark:text-white shadow-sm'
+                      : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+                  }`}
+                >
+                  <LayoutGrid className="w-3.5 h-3.5" />
+                  <span className="hidden sm:inline">Cards</span>
+                </button>
+                <button
+                  onClick={() => setPhaseViewMode('list')}
+                  title="Exibição em Lista Compacta"
+                  className={`p-1.5 rounded-lg text-xs font-bold transition-all flex items-center space-x-1 ${
+                    phaseViewMode === 'list'
+                      ? 'bg-white dark:bg-indigo-600 text-gray-900 dark:text-white shadow-sm'
+                      : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+                  }`}
+                >
+                  <List className="w-3.5 h-3.5" />
+                  <span className="hidden sm:inline">Lista</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* GRADE DE CARDS DE TAMANHO MÉDIO (MODO PADRÃO) */}
+          {phaseViewMode === 'grid' ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {phases
+                .filter((phase) => {
+                  if (phaseFilter === 'COMPLETED' && phase.status !== 'COMPLETED') return false;
+                  if (phaseFilter === 'IN_PROGRESS' && phase.status !== 'IN_PROGRESS') return false;
+                  if (phaseFilter === 'NOT_STARTED' && phase.status !== 'NOT_STARTED') return false;
+
+                  if (phaseSearch.trim()) {
+                    const term = phaseSearch.toLowerCase();
+                    const matchName = phase.name.toLowerCase().includes(term);
+                    const matchDesc = phase.description?.toLowerCase().includes(term);
+                    const matchNum = phase.phaseNumber.toString().includes(term);
+                    const matchTasks = phase.checklistTasks?.some((ct) => ct.title.toLowerCase().includes(term));
+                    return matchName || matchDesc || matchNum || matchTasks;
+                  }
+                  return true;
+                })
+                .map((phase) => {
+                  const doneTasks = phase.checklistTasks?.filter((t) => t.isCompleted).length || 0;
+                  const totalTasks = phase.checklistTasks?.length || 0;
+                  const phasePct = totalTasks > 0 ? Math.round((doneTasks / totalTasks) * 100) : (phase.status === 'COMPLETED' ? 100 : 0);
+                  const isExpanded = expandedInlinePhaseIds.includes(phase.id);
+
+                  return (
+                    <div
+                      key={phase.id}
+                      className={`group flex flex-col justify-between p-5 rounded-2xl bg-white dark:bg-[#0E131F] border transition-all duration-200 hover:shadow-md ${
+                        phase.status === 'COMPLETED'
+                          ? 'border-emerald-500/20 hover:border-emerald-500/40 dark:border-emerald-900/30'
+                          : phase.status === 'IN_PROGRESS'
+                          ? 'border-indigo-500/30 hover:border-indigo-500/50 dark:border-indigo-900/40'
+                          : 'border-gray-200 dark:border-gray-800 hover:border-gray-300 dark:hover:border-gray-700'
+                      }`}
+                    >
+                      {/* Topo do Card: Número da Etapa e Status */}
+                      <div>
+                        <div className="flex items-center justify-between gap-2">
+                          <span className="text-[11px] font-mono font-bold px-2 py-0.5 rounded-md bg-indigo-50 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-400 border border-indigo-200/60 dark:border-indigo-800/60">
+                            Etapa {phase.phaseNumber.toString().padStart(2, '0')}
+                          </span>
+
+                          <span
+                            className={`inline-flex items-center space-x-1 text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                              phase.status === 'COMPLETED'
+                                ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'
+                                : phase.status === 'IN_PROGRESS'
+                                ? 'bg-indigo-500/10 text-indigo-400 border border-indigo-500/20'
+                                : 'bg-gray-500/10 text-gray-400 border border-gray-500/20'
+                            }`}
+                          >
+                            {phase.status === 'COMPLETED' ? (
+                              <>
+                                <CheckCircle2 className="w-3 h-3 text-emerald-400" />
+                                <span>Homologada</span>
+                              </>
+                            ) : phase.status === 'IN_PROGRESS' ? (
+                              <>
+                                <Clock className="w-3 h-3 text-indigo-400" />
+                                <span>Em Execução</span>
+                              </>
+                            ) : (
+                              <>
+                                <Circle className="w-3 h-3 text-gray-400" />
+                                <span>Pendente</span>
+                              </>
+                            )}
+                          </span>
+                        </div>
+
+                        {/* Nome da Etapa */}
+                        <h3
+                          className="font-extrabold text-sm text-gray-900 dark:text-white mt-3 line-clamp-1 group-hover:text-indigo-400 transition-colors"
+                          title={phase.name}
+                        >
+                          {phase.name}
+                        </h3>
+
+                        {/* Descrição / Escopo da Etapa */}
+                        <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 line-clamp-2 min-h-[32px] leading-relaxed">
+                          {phase.description || 'Critérios de qualidade e itens operacionais da etapa.'}
+                        </p>
+
+                        {/* Barra de Progresso Interna da Etapa */}
+                        <div className="mt-4 pt-3 border-t border-gray-100 dark:border-gray-800/80">
+                          <div className="flex items-center justify-between text-xs mb-1.5">
+                            <span className="text-[11px] font-medium text-gray-500 dark:text-gray-400">
+                              {doneTasks} de {totalTasks} tarefas concluídas
+                            </span>
+                            <span
+                              className={`text-xs font-bold font-mono ${
+                                phasePct === 100
+                                  ? 'text-emerald-400'
+                                  : phasePct > 0
+                                  ? 'text-indigo-400'
+                                  : 'text-gray-400'
+                              }`}
+                            >
+                              {phasePct}%
+                            </span>
+                          </div>
+
+                          <div className="h-1.5 w-full bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
+                            <div
+                              className={`h-full rounded-full transition-all duration-500 ${
+                                phasePct === 100
+                                  ? 'bg-emerald-500'
+                                  : phasePct > 0
+                                  ? 'bg-gradient-to-r from-indigo-500 to-purple-500'
+                                  : 'bg-transparent'
+                              }`}
+                              style={{ width: `${phasePct}%` }}
+                            />
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Botões de Ação no Rodapé do Card */}
+                      <div className="mt-4 pt-3 border-t border-gray-100 dark:border-gray-800/60 flex items-center gap-2">
+                        <button
+                          onClick={() => setSelectedPhaseModal(phase)}
+                          className="flex-1 py-2 px-3 rounded-xl bg-gray-50 hover:bg-indigo-50 dark:bg-gray-900/60 dark:hover:bg-indigo-950/40 text-gray-700 dark:text-gray-200 hover:text-indigo-600 dark:hover:text-indigo-400 text-xs font-bold transition-all flex items-center justify-center space-x-1.5 border border-gray-200/80 dark:border-gray-800 hover:border-indigo-500/30"
+                        >
+                          <CheckSquare className="w-3.5 h-3.5 text-indigo-500" />
+                          <span>Gerenciar ({totalTasks})</span>
+                          <ArrowRight className="w-3 h-3 text-gray-400 group-hover:translate-x-0.5 transition-transform" />
+                        </button>
+
+                        <button
+                          onClick={() => toggleInlinePhase(phase.id)}
+                          className="p-2 rounded-xl text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800/60 transition-colors"
+                          title={isExpanded ? 'Recolher tarefas inline' : 'Expandir tarefas inline no card'}
+                        >
+                          {isExpanded ? (
+                            <ChevronUp className="w-4 h-4 text-indigo-400" />
+                          ) : (
+                            <ChevronDown className="w-4 h-4" />
+                          )}
+                        </button>
+
+                        {isManager && phase.status !== 'COMPLETED' && (
+                          <button
+                            onClick={() => handleApprovePhase(phase.id)}
+                            className="px-2.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition-all shadow-sm flex items-center space-x-1 shrink-0"
+                            title="Homologar esta etapa"
+                          >
+                            <CheckCircle2 className="w-3.5 h-3.5" />
+                            <span className="hidden sm:inline">Homologar</span>
+                          </button>
+                        )}
+                      </div>
+
+                      {/* Exibição Inline Expansível (Opcional, acionado pelo Chevron) */}
+                      {isExpanded && phase.checklistTasks && phase.checklistTasks.length > 0 && (
+                        <div className="mt-3 pt-3 border-t border-gray-100 dark:border-gray-800/80 space-y-1.5 animate-in fade-in duration-150">
+                          {phase.checklistTasks.map((ct) => (
+                            <div
+                              key={ct.id}
+                              className="flex items-start justify-between p-2 rounded-xl bg-gray-50 dark:bg-gray-900/50 border border-gray-200/60 dark:border-gray-800/60 text-[11px]"
+                            >
+                              <label className="flex items-start space-x-2 cursor-pointer select-none">
+                                <input
+                                  type="checkbox"
+                                  checked={ct.isCompleted}
+                                  onChange={() => handleToggleChecklistTask(ct.id, ct.isCompleted)}
+                                  className="mt-0.5 rounded border-indigo-500 text-indigo-600 focus:ring-indigo-500"
+                                />
+                                <span className={ct.isCompleted ? 'line-through text-gray-400' : 'text-gray-800 dark:text-gray-200 font-medium'}>
+                                  {ct.title}
+                                </span>
+                              </label>
+
+                              {ct.evidenceRequired && (
+                                <span className="shrink-0 text-[9px] font-bold px-1.5 py-0.2 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20">
+                                  Evidência
+                                </span>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+            </div>
+          ) : (
+            /* MODO LISTA COMPACTA */
+            <div className="space-y-2.5">
+              {phases
+                .filter((phase) => {
+                  if (phaseFilter === 'COMPLETED' && phase.status !== 'COMPLETED') return false;
+                  if (phaseFilter === 'IN_PROGRESS' && phase.status !== 'IN_PROGRESS') return false;
+                  if (phaseFilter === 'NOT_STARTED' && phase.status !== 'NOT_STARTED') return false;
+                  return true;
+                })
+                .map((phase) => {
+                  const doneTasks = phase.checklistTasks?.filter((t) => t.isCompleted).length || 0;
+                  const totalTasks = phase.checklistTasks?.length || 0;
+                  const phasePct = totalTasks > 0 ? Math.round((doneTasks / totalTasks) * 100) : (phase.status === 'COMPLETED' ? 100 : 0);
+
+                  return (
+                    <div
+                      key={phase.id}
+                      className="p-4 rounded-2xl bg-white dark:bg-[#0E131F] border border-gray-200 dark:border-gray-800 hover:border-indigo-500/40 shadow-sm transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-3"
+                    >
+                      <div className="flex items-center space-x-3">
+                        <span className="text-xs font-mono font-bold px-2 py-0.5 rounded-md bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
+                          {phase.phaseNumber.toString().padStart(2, '0')}
+                        </span>
+                        <div>
+                          <h4 className="font-extrabold text-sm text-gray-900 dark:text-white">
+                            {phase.name}
+                          </h4>
+                          <span className="text-[11px] text-gray-400 block line-clamp-1">
+                            {phase.description}
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center space-x-4 shrink-0">
+                        <div className="w-28 text-right">
+                          <span className="text-[11px] font-mono text-gray-400 block">
+                            {doneTasks}/{totalTasks} ({phasePct}%)
+                          </span>
+                          <div className="h-1.5 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden mt-0.5">
+                            <div
+                              className={`h-full rounded-full ${phasePct === 100 ? 'bg-emerald-500' : 'bg-indigo-500'}`}
+                              style={{ width: `${phasePct}%` }}
+                            />
+                          </div>
+                        </div>
+
+                        <button
+                          onClick={() => setSelectedPhaseModal(phase)}
+                          className="px-3 py-1.5 rounded-xl bg-gray-100 hover:bg-indigo-600 dark:bg-gray-800 dark:hover:bg-indigo-600 text-gray-700 hover:text-white dark:text-gray-300 text-xs font-bold transition-all flex items-center space-x-1"
+                        >
+                          <CheckSquare className="w-3.5 h-3.5" />
+                          <span>Ver Tarefas</span>
+                        </button>
+                      </div>
+                    </div>
+                  );
+                })}
+            </div>
+          )}
+
+          {/* MODAL FOCADO E LEVE DE GERENCIAMENTO DA ETAPA */}
+          {selectedPhaseModal && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 overflow-y-auto">
+              <div className="w-full max-w-2xl bg-white dark:bg-[#0E131F] rounded-3xl border border-gray-200 dark:border-gray-800 shadow-2xl p-6 space-y-4 my-8 animate-in fade-in zoom-in-95 duration-150">
+                {/* Header do Modal */}
+                <div className="flex items-start justify-between gap-3 border-b border-gray-100 dark:border-gray-800/80 pb-4">
                   <div>
                     <div className="flex items-center space-x-2">
                       <span className="text-xs font-mono font-bold px-2 py-0.5 rounded-md bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
-                        Fase {phase.phaseNumber.toString().padStart(2, '0')}
+                        Etapa {selectedPhaseModal.phaseNumber.toString().padStart(2, '0')}
                       </span>
-                      <h3 className="font-extrabold text-sm text-gray-900 dark:text-white">
-                        {phase.name}
-                      </h3>
                       <span
                         className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
-                          phase.status === 'COMPLETED'
+                          selectedPhaseModal.status === 'COMPLETED'
                             ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'
-                            : phase.status === 'IN_PROGRESS'
+                            : selectedPhaseModal.status === 'IN_PROGRESS'
                             ? 'bg-indigo-500/10 text-indigo-400 border border-indigo-500/20'
                             : 'bg-gray-500/10 text-gray-400 border border-gray-500/20'
                         }`}
                       >
-                        {phase.status === 'COMPLETED' ? 'Homologada' : phase.status === 'IN_PROGRESS' ? 'Em Execução' : 'Não Iniciada'}
+                        {selectedPhaseModal.status === 'COMPLETED' ? 'Homologada' : selectedPhaseModal.status === 'IN_PROGRESS' ? 'Em Execução' : 'Pendente'}
                       </span>
                     </div>
-                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                      {phase.description}
-                    </p>
+                    <h3 className="font-extrabold text-base text-gray-900 dark:text-white mt-1.5">
+                      {selectedPhaseModal.name}
+                    </h3>
                   </div>
 
-                  {isManager && phase.status !== 'COMPLETED' && (
-                    <button
-                      onClick={() => handleApprovePhase(phase.id)}
-                      className="px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow-sm flex items-center space-x-1 shrink-0"
-                    >
-                      <CheckCircle2 className="w-3.5 h-3.5" />
-                      <span>Homologar Fase</span>
-                    </button>
+                  <button
+                    onClick={() => setSelectedPhaseModal(null)}
+                    className="p-1.5 rounded-xl text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
+                </div>
+
+                {/* Callout de Objetivo e Critérios */}
+                <div className="p-3.5 rounded-2xl bg-indigo-50/60 dark:bg-indigo-950/30 border border-indigo-200/60 dark:border-indigo-800/40 text-xs space-y-1">
+                  <p className="text-indigo-950 dark:text-indigo-200">
+                    <b>Objetivo da Etapa:</b> {selectedPhaseModal.description || 'Critérios de qualidade do projeto.'}
+                  </p>
+                  {selectedPhaseModal.approvalNotes && (
+                    <p className="text-[11px] text-gray-500 dark:text-gray-400">
+                      <b>Nota de Homologação:</b> {selectedPhaseModal.approvalNotes}
+                    </p>
                   )}
                 </div>
 
-                {/* Sub-itens de auditoria da Fase */}
-                {phase.checklistTasks && phase.checklistTasks.length > 0 && (
-                  <div className="mt-3 pt-3 border-t border-gray-100 dark:border-gray-800/80 space-y-2">
-                    {phase.checklistTasks.map((ct) => (
+                {/* Lista de Checklist da Etapa */}
+                <div className="space-y-2 max-h-[50vh] overflow-y-auto pr-1">
+                  {selectedPhaseModal.checklistTasks && selectedPhaseModal.checklistTasks.length > 0 ? (
+                    selectedPhaseModal.checklistTasks.map((ct) => (
                       <div
                         key={ct.id}
-                        className="flex items-start justify-between p-2.5 rounded-xl bg-gray-50/80 dark:bg-gray-900/40 border border-gray-200/60 dark:border-gray-800/60 text-xs"
+                        className="flex items-start justify-between p-3 rounded-2xl bg-gray-50 dark:bg-gray-900/50 border border-gray-200/80 dark:border-gray-800 text-xs transition-all hover:border-indigo-500/30"
                       >
-                        <label className="flex items-start space-x-3 cursor-pointer select-none">
+                        <label className="flex items-start space-x-3 cursor-pointer select-none flex-1">
                           <input
                             type="checkbox"
                             checked={ct.isCompleted}
                             onChange={() => handleToggleChecklistTask(ct.id, ct.isCompleted)}
-                            className="mt-0.5 rounded border-indigo-500 text-indigo-600 focus:ring-indigo-500"
+                            className="mt-0.5 rounded border-indigo-500 text-indigo-600 focus:ring-indigo-500 w-4 h-4 cursor-pointer"
                           />
-                          <div>
-                            <span className={`font-semibold ${ct.isCompleted ? 'line-through text-gray-400' : 'text-gray-800 dark:text-gray-200'}`}>
+                          <div className="pr-2">
+                            <span
+                              className={`font-semibold block ${
+                                ct.isCompleted
+                                  ? 'line-through text-gray-400'
+                                  : 'text-gray-900 dark:text-gray-100'
+                              }`}
+                            >
                               {ct.title}
                             </span>
                             {ct.criteria && (
-                              <p className="text-[11px] text-gray-400 mt-0.5">
-                                Critério: {ct.criteria}
+                              <p className="text-[11px] text-gray-500 dark:text-gray-400 mt-0.5 leading-relaxed">
+                                <b>Critério:</b> {ct.criteria}
+                              </p>
+                            )}
+                            {ct.evidenceNotes && (
+                              <p className="text-[10px] text-emerald-400 font-mono mt-1">
+                                ✔ {ct.evidenceNotes}
                               </p>
                             )}
                           </div>
                         </label>
 
                         {ct.evidenceRequired && (
-                          <span className="shrink-0 text-[10px] font-bold px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20">
+                          <span className="shrink-0 text-[10px] font-bold px-2 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20">
                             Evidência Obrigatória
                           </span>
                         )}
                       </div>
-                    ))}
+                    ))
+                  ) : (
+                    <p className="text-xs text-gray-400 text-center py-4">
+                      Nenhuma tarefa de checklist cadastrada nesta etapa.
+                    </p>
+                  )}
+                </div>
+
+                {/* Rodapé do Modal */}
+                <div className="flex items-center justify-between pt-3 border-t border-gray-100 dark:border-gray-800">
+                  <span className="text-xs text-gray-400 font-medium">
+                    {selectedPhaseModal.checklistTasks?.filter((t) => t.isCompleted).length || 0} de{' '}
+                    {selectedPhaseModal.checklistTasks?.length || 0} tarefas concluídas
+                  </span>
+
+                  <div className="flex items-center space-x-2">
+                    {isManager && selectedPhaseModal.status !== 'COMPLETED' && (
+                      <button
+                        onClick={async () => {
+                          await handleApprovePhase(selectedPhaseModal.id);
+                          setSelectedPhaseModal(null);
+                        }}
+                        className="px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs flex items-center space-x-1.5 shadow-sm"
+                      >
+                        <CheckCircle2 className="w-4 h-4" />
+                        <span>Homologar Esta Etapa</span>
+                      </button>
+                    )}
+
+                    <button
+                      onClick={() => setSelectedPhaseModal(null)}
+                      className="px-4 py-2 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 text-xs font-bold hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+                    >
+                      Fechar
+                    </button>
                   </div>
-                )}
+                </div>
               </div>
-            ))}
-          </div>
+            </div>
+          )}
         </div>
       )}
 

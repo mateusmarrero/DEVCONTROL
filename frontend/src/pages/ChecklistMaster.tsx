@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { ListOrdered, CheckCircle2, Shield, Layers, Bookmark, Download, Check, FileSpreadsheet } from 'lucide-react';
+import { ListOrdered, CheckCircle2, Shield, Layers, Bookmark, Download, Check, FileSpreadsheet, LayoutGrid, List, ArrowRight, CheckSquare } from 'lucide-react';
 import { api } from '../services/api';
 import { PHASES_17_CATALOG } from '../types/phases';
 
 export const ChecklistMaster: React.FC = () => {
   const [selectedPhase, setSelectedPhase] = useState<number>(1);
   const [downloading, setDownloading] = useState(false);
+  const [viewMode, setViewMode] = useState<'cards' | 'split'>('cards');
 
   const activePhaseData = PHASES_17_CATALOG.find((p) => p.number === selectedPhase) || PHASES_17_CATALOG[0];
 
@@ -40,17 +41,100 @@ export const ChecklistMaster: React.FC = () => {
           </p>
         </div>
 
-        <a
-          href="/templates/DEVCONTROL_MODELO_OFICIAL.csv"
-          download="DEVCONTROL_MODELO_OFICIAL.csv"
-          className="px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs flex items-center space-x-2 shadow-lg shadow-indigo-600/30 transition-all shrink-0"
-        >
-          <FileSpreadsheet className="w-4 h-4" />
-          <span>Baixar Planilha Modelo (.CSV)</span>
-        </a>
+        <div className="flex items-center space-x-2 shrink-0">
+          <div className="flex items-center space-x-1 bg-gray-900/60 p-1 rounded-xl border border-gray-800">
+            <button
+              onClick={() => setViewMode('cards')}
+              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center space-x-1.5 ${
+                viewMode === 'cards'
+                  ? 'bg-indigo-600 text-white shadow-md'
+                  : 'text-gray-400 hover:text-white'
+              }`}
+            >
+              <LayoutGrid className="w-3.5 h-3.5" />
+              <span>Cards Médios</span>
+            </button>
+            <button
+              onClick={() => setViewMode('split')}
+              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center space-x-1.5 ${
+                viewMode === 'split'
+                  ? 'bg-indigo-600 text-white shadow-md'
+                  : 'text-gray-400 hover:text-white'
+              }`}
+            >
+              <List className="w-3.5 h-3.5" />
+              <span>Painel Detalhado</span>
+            </button>
+          </div>
+
+          <a
+            href="/templates/DEVCONTROL_MODELO_OFICIAL.csv"
+            download="DEVCONTROL_MODELO_OFICIAL.csv"
+            className="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs flex items-center space-x-2 shadow-lg shadow-indigo-600/30 transition-all shrink-0"
+          >
+            <FileSpreadsheet className="w-4 h-4" />
+            <span>Planilha (.CSV)</span>
+          </a>
+        </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      {/* VISUALIZAÇÃO EM CARDS DE TAMANHO MÉDIO */}
+      {viewMode === 'cards' ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4.5">
+          {PHASES_17_CATALOG.map((p) => (
+            <div
+              key={p.number}
+              className="group flex flex-col justify-between p-5 rounded-2xl bg-white dark:bg-[#0E131F] border border-gray-200/90 dark:border-gray-800 hover:border-indigo-500/40 hover:shadow-md transition-all duration-200"
+            >
+              <div>
+                <div className="flex items-center justify-between gap-2">
+                  <span className="text-[11px] font-mono font-bold px-2 py-0.5 rounded-md bg-indigo-50 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-400 border border-indigo-200/60 dark:border-indigo-800/60">
+                    Fase {p.code} de 17
+                  </span>
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                    Obrigatória
+                  </span>
+                </div>
+
+                <h3 className="font-extrabold text-sm text-gray-900 dark:text-white mt-3 line-clamp-1 group-hover:text-indigo-400 transition-colors">
+                  {p.name}
+                </h3>
+
+                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 line-clamp-2 min-h-[32px] leading-relaxed">
+                  {p.objective}
+                </p>
+
+                <div className="mt-3.5 pt-3 border-t border-gray-100 dark:border-gray-800/80 space-y-1">
+                  <span className="text-[11px] text-gray-400 block font-mono">
+                    Critério Geral:
+                  </span>
+                  <p className="text-[11px] text-gray-600 dark:text-gray-300 line-clamp-2">
+                    {p.generalCriteria}
+                  </p>
+                </div>
+              </div>
+
+              <div className="mt-4 pt-3 border-t border-gray-100 dark:border-gray-800/60 flex items-center justify-between">
+                <span className="text-xs font-mono font-bold text-indigo-400 bg-indigo-500/10 px-2 py-0.5 rounded-md">
+                  {p.tasks.length} Tarefas
+                </span>
+
+                <button
+                  onClick={() => {
+                    setSelectedPhase(p.number);
+                    setViewMode('split');
+                  }}
+                  className="px-3 py-1.5 rounded-xl bg-gray-50 hover:bg-indigo-600 dark:bg-gray-900/60 dark:hover:bg-indigo-600 text-gray-700 hover:text-white dark:text-gray-300 text-xs font-bold transition-all flex items-center space-x-1 border border-gray-200 dark:border-gray-800 hover:border-transparent"
+                >
+                  <span>Ver Tarefas</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Lista das 17 Fases */}
         <div className="p-4 rounded-3xl bg-white dark:bg-[#0E131F] border border-gray-200 dark:border-gray-800 shadow-sm space-y-2 max-h-[750px] overflow-y-auto">
           <div className="flex items-center justify-between pb-2 border-b border-gray-100 dark:border-gray-800 text-xs font-bold text-gray-400 uppercase">
@@ -143,6 +227,7 @@ export const ChecklistMaster: React.FC = () => {
           </div>
         </div>
       </div>
+      )}
     </div>
   );
 };

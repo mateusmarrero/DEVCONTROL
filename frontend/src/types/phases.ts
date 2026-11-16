@@ -160,7 +160,10 @@ export const PHASES_17_CATALOG: OfficialPhase[] = [
       { id: 'T160', title: 'Auditoria contínua de indexação e envio dinâmico via Google Indexing API / Bing IndexNow', criteria: 'Monitorar rastreamento, envio dinâmico de sitemap e indexação instantânea.', isMandatory: true, priority: 'HIGH', suggestedRole: 'Editor' },
       { id: 'T161', title: 'Implementar Schema Markup avançado JSON-LD (Rich Snippets & EEAT)', criteria: 'Configurar schemas Breadcrumbs, Organization, Article, FAQPage e Rich Snippets no Google.', isMandatory: true, priority: 'HIGH', suggestedRole: 'Editor' },
       { id: 'T162', title: 'Otimização semântica para Respostas de IA do Google (AI Overviews / SGE)', criteria: 'Estruturação de respostas diretas, tabelas comparativas e autoridade EEAT para ser citado pela IA do Google.', isMandatory: true, priority: 'HIGH', suggestedRole: 'Editor' },
-      { id: 'T163', title: 'Arquitetura de Topic Clusters e Silos de links internos sem canibalização de palavras-chave', criteria: 'Garantir autoridade tópica e direcionamento correto de PageRank interno.', isMandatory: true, priority: 'HIGH', suggestedRole: 'Editor' }
+      { id: 'T163', title: 'Arquitetura de Topic Clusters e Silos de links internos sem canibalização de palavras-chave', criteria: 'Garantir autoridade tópica e direcionamento correto de PageRank interno.', isMandatory: true, priority: 'HIGH', suggestedRole: 'Editor' },
+      { id: 'T166', title: 'Auditoria automatizada de silos temáticos e eliminação de páginas órfãs', criteria: 'Garantir linkagem interna bidirecional e profundidade máxima de 3 cliques.', isMandatory: true, priority: 'HIGH', suggestedRole: 'Editor' },
+      { id: 'T168', title: 'Implementação de Schema FAQPage e HowTo em JSON-LD para Rich Snippets expansíveis', criteria: 'Maximizar taxa de cliques (CTR) na SERP com blocos interativos de perguntas e tutoriais.', isMandatory: true, priority: 'HIGH', suggestedRole: 'Editor' },
+      { id: 'T169', title: 'Auditoria estrita de links canônicos absolutos e prevenção de canibalização e conteúdo duplicado', criteria: 'Prevenir diluição de ranking entre versões HTTP/HTTPS/WWW e URLs parametrizadas.', isMandatory: true, priority: 'HIGH', suggestedRole: 'Editor' }
     ]
   },
   {
@@ -180,7 +183,8 @@ export const PHASES_17_CATALOG: OfficialPhase[] = [
       { id: 'T078', title: 'Otimizar consultas e chamadas de API', criteria: 'Medir e otimizar carregamento.', isMandatory: false, priority: 'MEDIUM', suggestedRole: 'Editor' },
       { id: 'T079', title: 'Medir Core Web Vitals: LCP, INP e CLS', criteria: 'Medir e otimizar carregamento.', isMandatory: false, priority: 'MEDIUM', suggestedRole: 'Editor' },
       { id: 'T080', title: 'Testar em dispositivo e conexão de desempenho limitado', criteria: 'Medir e otimizar carregamento.', isMandatory: false, priority: 'MEDIUM', suggestedRole: 'Editor' },
-      { id: 'T164', title: 'Otimização estrita de Core Web Vitals para ranking Google (LCP < 2.0s, INP < 150ms, CLS < 0.05)', criteria: 'Atingir notas verdes no Google PageSpeed Insights e dados de campo CrUX em dispositivos móveis.', isMandatory: true, priority: 'HIGH', suggestedRole: 'Editor' }
+      { id: 'T164', title: 'Otimização estrita de Core Web Vitals para ranking Google (LCP < 2.0s, INP < 150ms, CLS < 0.05)', criteria: 'Atingir notas verdes no Google PageSpeed Insights e dados de campo CrUX em dispositivos móveis.', isMandatory: true, priority: 'HIGH', suggestedRole: 'Editor' },
+      { id: 'T167', title: 'Conversão de imagens para formatos de nova geração (AVIF/WebP) e otimização para Google Imagens', criteria: 'Compactação sem perdas, dimensões responsivas srcset e atributos alt contextuais para SEO visual.', isMandatory: true, priority: 'HIGH', suggestedRole: 'Editor' }
     ]
   },
   {
@@ -331,7 +335,8 @@ export const PHASES_17_CATALOG: OfficialPhase[] = [
       { id: 'T148', title: 'Planejar versão e critérios de aceite', criteria: 'Priorizar melhorias contínuas.', isMandatory: false, priority: 'MEDIUM', suggestedRole: 'Editor' },
       { id: 'T149', title: 'Executar testes de regressão após mudanças', criteria: 'Priorizar melhorias contínuas.', isMandatory: false, priority: 'MEDIUM', suggestedRole: 'Editor' },
       { id: 'T150', title: 'Atualizar documentação e histórico de versão', criteria: 'Priorizar melhorias contínuas.', isMandatory: false, priority: 'MEDIUM', suggestedRole: 'Editor' },
-      { id: 'T165', title: 'Atualização contínua de conteúdo Evergreen e auditoria periódica de posicionamento SERP', criteria: 'Garantir frescor algorítmico do Google (Query Deserves Freshness) e testes de CTR nos títulos de busca.', isMandatory: false, priority: 'MEDIUM', suggestedRole: 'Editor' }
+      { id: 'T165', title: 'Atualização contínua de conteúdo Evergreen e auditoria periódica de posicionamento SERP', criteria: 'Garantir frescor algorítmico do Google (Query Deserves Freshness) e testes de CTR nos títulos de busca.', isMandatory: false, priority: 'MEDIUM', suggestedRole: 'Editor' },
+      { id: 'T170', title: 'GEO - Otimização semântica para citações diretas em mecanismos de IA (Google AI Overviews e Perplexity)', criteria: 'Estruturação de dados factuais, resumos executivos de 45 palavras e entidades Wikidata/Wikipedia.', isMandatory: true, priority: 'HIGH', suggestedRole: 'Editor' }
     ]
   },
   {

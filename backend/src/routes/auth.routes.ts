@@ -5,6 +5,7 @@ import { prisma } from '../config/prisma.js';
 import { authenticate, authorizeRoles } from '../middleware/auth.js';
 import { logActivity } from '../middleware/audit.js';
 import { Role } from '@prisma/client';
+import { sendInviteEmail } from '../services/mail.service.js';
 
 const loginSchema = z.object({
   email: z.string().email('E-mail inválido'),
@@ -118,6 +119,16 @@ export async function authRoutes(app: FastifyInstance) {
       details: { code, role, email },
       ipAddress: request.ip
     });
+
+    if (email) {
+      const adminUser = await prisma.user.findUnique({ where: { id: request.user!.id } });
+      await sendInviteEmail({
+        to: email,
+        code,
+        role,
+        invitedByName: adminUser?.name || 'Administrador Master'
+      });
+    }
 
     return reply.status(201).send(invite);
   });

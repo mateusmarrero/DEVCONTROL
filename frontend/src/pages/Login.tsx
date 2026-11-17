@@ -22,6 +22,17 @@ export const Login: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  React.useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const codeParam = params.get('code');
+    const emailParam = params.get('email');
+    if (codeParam) {
+      setTab('invite');
+      setInviteCode(codeParam);
+      if (emailParam) setInviteEmail(emailParam);
+    }
+  }, []);
+
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);

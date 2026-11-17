@@ -93,12 +93,20 @@ export async function sendInviteEmail({ to, code, role, invitedByName }: SendInv
   // Se SMTP estiver configurado no .env, dispara e-mail real
   if (host && user && pass) {
     try {
-      const transporter = nodemailer.createTransport({
-        host,
-        port,
-        secure: port === 465,
-        auth: { user, pass }
-      });
+      const cleanPass = pass.replace(/\s+/g, '');
+      const isGmail = host.includes('gmail') || user.includes('@gmail.com');
+
+      const transporter = isGmail
+        ? nodemailer.createTransport({
+            service: 'gmail',
+            auth: { user: user.trim(), pass: cleanPass }
+          })
+        : nodemailer.createTransport({
+            host,
+            port,
+            secure: port === 465,
+            auth: { user: user.trim(), pass: cleanPass }
+          });
 
       const info = await transporter.sendMail({
         from,
@@ -107,7 +115,7 @@ export async function sendInviteEmail({ to, code, role, invitedByName }: SendInv
         html: htmlContent
       });
 
-      console.log(`[EMAIL DISPARADO] Convite enviado para ${to} (MessageId: ${info.messageId})`);
+      console.log(`[EMAIL DISPARADO COM SUCESSO] Convite enviado para ${to} (MessageId: ${info.messageId})`);
       return { success: true, messageId: info.messageId };
     } catch (err: any) {
       console.error('[ERRO SMTP]', err.message);
